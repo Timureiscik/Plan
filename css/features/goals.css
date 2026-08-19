@@ -1,0 +1,439 @@
+/* =========================================================
+   HEDEFLER (GOALS)
+
+   Kart tasarımı bilinçli olarak .streak-item / .progress-track
+   desenini yeniden kullanır — yeni bir tasarım sistemi icat
+   edilmedi (bkz. 22-goals.js üst yorumu).
+   ========================================================= */
+
+.goal-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--panel-2);
+}
+
+.goal-card-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.goal-card-icon {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--panel-3);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+}
+
+.goal-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.goal-card-title {
+    font-size: 13px;
+    font-weight: 650;
+    color: var(--text);
+}
+
+.goal-card-meta {
+    margin-top: 4px;
+    color: var(--muted-2);
+    font-size: 11px;
+}
+
+.goal-card-actions {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.goal-broken-badge {
+    padding: 8px 12px;
+    border-radius: 9px;
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.25);
+    color: #ff9d9d;
+    font-size: 11.5px;
+}
+
+.goal-linked-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 9px;
+    border-radius: 100px;
+    background: var(--panel-3);
+    border: 1px solid var(--border-2);
+    color: var(--muted-2);
+    font-size: 10.5px;
+    font-weight: 600;
+}
+
+.goal-linked-badge.goal-status-complete {
+    color: var(--good);
+    border-color: var(--good);
+    background: rgba(88, 214, 141, 0.12);
+}
+
+.goal-history-status {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.goal-history-status.is-complete {
+    color: var(--good);
+}
+
+.goal-history-status.is-missed {
+    color: var(--muted-2);
+}
+
+@media (max-width: 520px) {
+
+    .goal-card-top {
+        flex-wrap: wrap;
+    }
+
+    .goal-card-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+}
+
+/* =========================================================
+   HEDEFLER — GEÇMİŞ (KOMPAKT LİSTE + AYLIK ACCORDION)
+
+   Eski büyük .streak-item kart galerisinin yerini alır.
+   Yeni bir tasarım sistemi İCAT EDİLMEDİ — mevcut panel/
+   border/radius/chip değerleri (.day-panel-subcard,
+   .category-filter, .icon-mini-button) yeniden kullanıldı.
+   ========================================================= */
+
+.goal-history-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+}
+
+.goal-history-summary[hidden] {
+    display: none;
+}
+
+.goal-history-summary-main strong {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 650;
+    color: var(--text);
+}
+
+.goal-history-summary-main span {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted-2);
+    font-size: 11px;
+}
+
+.goal-history-summary-percent {
+    flex: 0 0 auto;
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.5px;
+}
+
+.goal-history-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.goal-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.goal-history-month {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--panel-2);
+    overflow: hidden;
+}
+
+.goal-history-month-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.12s ease;
+}
+
+.goal-history-month-header:hover {
+    background: var(--surface-hover);
+}
+
+.goal-history-month-title {
+    flex: 1;
+    min-width: 0;
+    color: var(--text-dim);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.goal-history-month-count {
+    flex: 0 0 auto;
+    color: var(--muted-2);
+    font-size: 11px;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+}
+
+.goal-history-month-chevron {
+    flex: 0 0 auto;
+    color: var(--muted-2);
+    font-size: 13px;
+    line-height: 1;
+    transition: transform 0.15s ease;
+}
+
+.goal-history-month-chevron.open {
+    transform: rotate(180deg);
+}
+
+.goal-history-month-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease;
+}
+
+.goal-history-month-body.open {
+    /*
+     * Sabit büyük bir üst sınır — gerçek yükseklik ay
+     * başına makul sayıda kayıtla her zaman bunun altında
+     * kalır; asıl kısıtlama (kapalıyken 0) burada önemli
+     * olan kısımdır.
+     */
+    max-height: 2400px;
+}
+
+.goal-history-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+}
+
+.goal-history-row-icon {
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: var(--panel-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12.5px;
+}
+
+.goal-history-row-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.goal-history-row-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text);
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.goal-history-row-title-sep {
+    margin: 0 4px;
+    color: var(--muted-3);
+}
+
+.goal-history-row-meta {
+    margin-top: 3px;
+    color: var(--muted-2);
+    font-size: 10.5px;
+}
+
+.goal-history-row-stat {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.goal-history-row-percent {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Durum göstergesi BİLİNÇLİ olarak nötr: kırmızı/alarm
+ * rengi veya büyük harfli etiket YOK (bkz. görev maddesi 4).
+ * Yalnızca tamamlanan dönemler "good" rengiyle hafifçe
+ * öne çıkar; tamamlanmayanlar sessiz/soluk kalır.
+ */
+.goal-history-row-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted-3);
+}
+
+.goal-history-row-dot.is-complete {
+    background: var(--good);
+}
+
+@media (max-width: 520px) {
+
+    .goal-history-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .goal-history-row-title {
+        white-space: normal;
+    }
+
+}
+
+/* =========================================================
+   HEDEFLER — GEÇMİŞ: GÖRÜNÜM KONTROLÜ (TOGGLE) + DÖNEM GRUBU
+
+   Eski üç butonlu (Tümü/Tamamlanan/Tamamlanmayan)
+   .category-chip filtresinin yerini alan, düşük görsel
+   ağırlıklı tek bir checkbox toggle. Yeni bir bileşen
+   sistemi İCAT EDİLMEDİ — yalnızca mevcut muted/panel renk
+   değişkenleri kullanıldı.
+   ========================================================= */
+
+.goal-history-hide-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted-2);
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.goal-history-hide-toggle input {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+/*
+ * Aynı dönemdeki (aynı tarih aralığı) birden fazla hedefi
+ * gruplayan blok. Tarih başlığı yalnızca bir kez yazılır;
+ * içindeki .goal-history-row'lar kendi üst kenarlıklarını
+ * KAYBEDER (bkz. altta) — ayırıcı çizgi yalnızca grubun
+ * kendisinde, ay başlığından ayrışmak için kalır.
+ */
+.goal-history-period-group {
+    border-top: 1px solid var(--border);
+    padding-top: 4px;
+}
+
+.goal-history-period-label {
+    padding: 6px 14px 0;
+    color: var(--muted-3);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.goal-history-period-group .goal-history-row {
+    border-top: none;
+}
+
+/* =========================================================
+   YENİ HEDEF MODALI — GİRİŞ ALANLARI
+
+   Girdi kutularının kendisi artık #task-form ile aynı temel
+   kuralları paylaşıyor (bkz. yukarıdaki #task-form /
+   #settings-form / #goal-form seçicisi). Burada yalnızca
+   task modalinde karşılığı olmayan, hedef modaline özgü üç
+   şey düzenleniyor: ikon inputunun genişliği, bölümler
+   (Kaynak / Hedef / Periyot) arası dikey nefes payı, ve
+   miktar+birim / başlangıç+bitiş gibi "iki inputun yan yana
+   durması gereken" satırlar — BUNLAR İÇİN eskiden gün paneli
+   formlarının sıkışık/kutulu görünümü (.day-panel-form)
+   ÖDÜNÇ ALINIYORDU; artık kendi, modal inputlarıyla aynı
+   görünümü kullanan .goal-field-row kullanılıyor.
+   ========================================================= */
+
+#goal-icon-input {
+    width: 84px;
+    text-align: center;
+}
+
+/*
+ * "Kaynak" / "Hedef" / "Periyot" bölümlerini tek tek kutuya
+ * almadan (kart içinde kart YOK), yalnızca aralarına normal
+ * bir alan label'ının biraz üzerinde dikey boşluk ekler —
+ * böylece bölümler görsel olarak ayrışır ama hâlâ tek,
+ * akışkan bir form gibi hissettirir.
+ */
+.goal-form-section {
+    margin-top: 8px;
+}
+
+.goal-field-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.goal-field-row > input {
+    flex: 1 1 140px;
+    min-width: 0;
+    margin-top: 0;
+}
+
+#goal-target-amount {
+    max-width: 92px;
+    flex: 0 0 92px;
+}
+

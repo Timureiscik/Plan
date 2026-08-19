@@ -1,0 +1,201 @@
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    background: rgba(6, 6, 7, 0.7);
+
+    z-index: 60;
+}
+
+.modal.open {
+    display: flex;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 440px;
+    max-height: 90vh;
+    overflow-y: auto;
+
+    border-radius: 16px;
+    background: var(--panel-2);
+    border: 1px solid var(--border-2);
+    padding: 24px;
+
+    animation: plan-modal-in 0.18s ease;
+}
+
+@keyframes plan-modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.modal-eyebrow {
+    display: block;
+    color: var(--muted-2);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.modal-header h2 {
+    margin: 4px 0 0;
+    font-size: 18px;
+}
+
+.modal-close {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--panel-3);
+    color: var(--text);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    background: var(--surface-hover);
+}
+
+#task-form,
+#settings-form,
+#goal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#task-form label,
+#settings-form label,
+#goal-form label {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+/*
+ * #goal-form BİLEREK bu aynı seçici listesine eklendi —
+ * "Yeni Hedef" modalı için ayrı bir ikinci input tasarım
+ * sistemi İCAT EDİLMEDİ. Önceden #goal-form bu kuralların
+ * hiçbirine dahil değildi, bu yüzden başlık/ikon/miktar/
+ * birim/tarih inputları tarayıcı varsayılan görünümüyle
+ * (border'sız, boşluksuz) render oluyordu — "sıkışık ve
+ * kutucuklu" hissin asıl kaynağı buydu.
+ */
+#task-form input[type="text"],
+#task-form textarea,
+#settings-form select,
+#goal-form input[type="text"],
+#goal-form input[type="number"],
+#goal-form input[type="date"],
+#goal-form select {
+    width: 100%;
+    padding: 11px 12px;
+    border-radius: 9px;
+    background: var(--panel);
+    border: 1px solid var(--border-2);
+    color: var(--text);
+    resize: vertical;
+}
+
+#task-form textarea {
+    line-height: 1.5;
+}
+
+.field-hint {
+    margin: 6px 0 0;
+    color: var(--muted-3);
+    font-size: 10.5px;
+    line-height: 1.5;
+}
+
+.checkbox-row {
+    margin-top: 16px !important;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--text-dim) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    cursor: pointer;
+}
+
+.checkbox-row input {
+    width: 16px;
+    height: 16px;
+}
+
+.category-picker {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.category-picker .category-chip {
+    padding: 7px 12px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* =========================================================
+   ONAY MODALI (silme/arşivleme gibi destructive action'lar)
+
+   Yeni bir modal tasarım sistemi İCAT EDİLMEDİ — .modal-box
+   ve .modal-actions aynen kullanılıyor; yalnızca daha dar bir
+   genişlik ve kısa açıklama metni için bir satır eklendi.
+   ========================================================= */
+
+.confirm-modal-box {
+    max-width: 380px;
+}
+
+.confirm-modal-message {
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/*
+ * Mevcut projede zaten kullanılan "tehlike" kırmızısıyla
+ * (bkz. .icon-mini-button.danger:hover, calendar-legend.holiday)
+ * aynı renk ailesi — yeni bir renk İCAT EDİLMEDİ.
+ */
+.confirm-modal-danger {
+    background: #ff6b6b;
+    color: #1a0a0a;
+}
+
+.confirm-modal-danger:hover {
+    background: #ff8a8a;
+}
+

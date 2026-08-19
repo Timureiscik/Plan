@@ -1,0 +1,176 @@
+/* =========================================================
+   KATEGORİ YÖNETİMİ (Ayarlar modalı)
+   ========================================================= */
+
+.settings-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0 16px;
+}
+
+.settings-subheading {
+    margin: 0 0 4px;
+    font-size: 14px;
+}
+
+.category-manage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 10px 0 12px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.category-manage-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 9px;
+    border-radius: 8px;
+    background: var(--panel-3);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    min-width: 0;
+}
+
+.category-manage-item .dot {
+    flex: 0 0 auto;
+}
+
+.category-manage-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    word-break: break-word;
+}
+
+.category-manage-edit,
+.category-manage-delete,
+.category-manage-save,
+.category-manage-cancel {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1px solid var(--border-2);
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.category-manage-edit:hover,
+.category-manage-save:hover {
+    color: var(--text);
+    background: var(--surface-hover);
+}
+
+.category-manage-delete:hover {
+    color: #ff9d9d;
+    background: var(--surface-hover);
+}
+
+.category-manage-delete:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.category-manage-delete:disabled:hover {
+    color: var(--muted);
+    background: transparent;
+}
+
+.category-manage-save {
+    color: var(--good);
+}
+
+.category-manage-item.is-editing {
+    flex-wrap: wrap;
+}
+
+.category-edit-icon,
+.category-edit-name {
+    padding: 6px 8px;
+    border-radius: 7px;
+    background: var(--panel);
+    border: 1px solid var(--border-2);
+    color: var(--text);
+    font-size: 12px;
+}
+
+.category-edit-icon {
+    width: 40px;
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.category-edit-name {
+    flex: 1 1 100px;
+    min-width: 60px;
+}
+
+.category-edit-color {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 6px;
+    border: 1px solid var(--border-2);
+    background: transparent;
+    cursor: pointer;
+}
+
+.category-add-form {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+
+.category-add-form input[type="text"] {
+    padding: 9px 10px;
+    border-radius: 8px;
+    background: var(--panel);
+    border: 1px solid var(--border-2);
+    color: var(--text);
+    font-size: 12px;
+}
+
+#category-add-icon {
+    width: 46px;
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+#category-add-name {
+    flex: 1 1 auto;
+    min-width: 60px;
+}
+
+#category-add-color {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 7px;
+    border: 1px solid var(--border-2);
+    background: transparent;
+    cursor: pointer;
+}
+
+.category-add-form .secondary-button {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 480px) {
+
+    .category-add-form {
+        flex-wrap: wrap;
+    }
+
+    .category-add-form .secondary-button {
+        width: 100%;
+    }
+
+}
+

@@ -1,0 +1,33 @@
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.shortcut-hint {
+    position: fixed;
+    left: 50%;
+    bottom: 26px;
+
+    transform: translateX(-50%) translateY(12px);
+
+    padding: 9px 16px;
+    border-radius: 100px;
+    background: var(--panel-3);
+    border: 1px solid var(--border-2);
+    color: var(--text-dim);
+    font-size: 12px;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+
+    z-index: 80;
+}
+
+.shortcut-hint.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+

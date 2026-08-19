@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitus</title>
+
+    <!-- =====================================================
+         SİTE İKONLARI
+         Tarayıcı sekmesi, Windows masaüstü/görev çubuğu ve
+         Android/iOS PWA kurulum ikonu için tek kaynak: köşeleri
+         yuvarlatılmış "tam ikon" (assets/icons/icon-*.png,
+         tam_ikon.jpg'den üretildi). 16-48px arası boyutlarda en
+         okunaklı sürüm bu olduğu için seçildi — kelime
+         logosundaki yazı bu boyutlarda okunamaz hale geldiği için
+         favicon/uygulama ikonu olarak KULLANILMADI.
+         ===================================================== -->
+
+    <link rel="icon" href="assets/icons/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
+
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#0d0d0f">
+
+    <!-- Bağlantı önizlemeleri (WhatsApp, Twitter/X, vb.) için
+         renkli kelime logosu — bu bağlamda sabit bir arkaplanla
+         gösterilmesi normal olduğundan (önizleme kartları zaten
+         kendi arkaplanına sahiptir) burada kullanılabilir. -->
+    <meta property="og:title" content="Habitus">
+    <meta property="og:description" content="Görev ve alışkanlık takip uygulaması">
+    <meta property="og:image" content="assets/brand/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="assets/brand/og-image.jpg">
+
+    <script>
+        /*
+         * Tema/renk paleti CSS yüklenmeden önce uygulanır,
+         * böylece sayfa açılırken "flash" (yanlış renkte
+         * kısa süreli görünme) problemi en aza indirilir.
+         */
+        (function () {
+            try {
+                var raw = localStorage.getItem("plan_settings_v2");
+                var settings = raw ? JSON.parse(raw) : null;
+                var theme = settings && settings.theme === "light" ? "light" : "dark";
+                var palette = settings && typeof settings.palette === "string" ? settings.palette : "monokrom";
+                document.documentElement.setAttribute("data-theme", theme);
+                document.documentElement.setAttribute("data-palette", palette);
+            } catch (error) {
+                document.documentElement.setAttribute("data-theme", "dark");
+                document.documentElement.setAttribute("data-palette", "monokrom");
+            }
+        })();
+    </script>
+
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         SOL SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">
+                <svg viewBox="0 0 624.91 337.96" class="brand-logo-icon" aria-hidden="true">
+                    <path d="M7.23,308.46 C5.98,305.04 5.21,301.46 6,297.46 C6.79,293.46 8.63,288.79 11.98,284.46 C15.34,280.12 20.2,275.66 26.11,271.46 C32.03,267.25 37.07,263.6 47.46,259.23 C57.85,254.86 69.62,249.11 88.46,245.23 C107.29,241.34 146.71,238.37 160.46,235.91 C174.2,233.45 168.84,233.7 170.93,230.46 C173.01,227.21 173.28,228.96 172.96,216.46 C172.63,203.96 168.95,170.29 169,155.46 C169.05,140.62 170.69,137.62 173.23,127.46 C175.77,117.29 179.86,104.35 184.23,94.46 C188.6,84.57 193.17,76.78 199.46,68.11 C205.74,59.45 215.13,49.11 221.96,42.46 C228.79,35.81 233.04,32.75 240.46,28.21 C247.87,23.68 257.46,18.6 266.46,15.23 C275.46,11.86 283.79,9.54 294.46,8 C305.12,6.46 317.79,5.13 330.46,6 C343.12,6.87 356.29,8.78 370.46,13.23 C384.62,17.67 403.29,28.4 415.46,32.68 C427.62,36.96 434.29,37.71 443.46,38.91 C452.62,40.12 459.29,40.9 470.46,39.91 C481.62,38.93 493.12,30.28 510.46,33 C527.79,35.72 560.96,50.38 574.46,56.21 C587.96,62.04 584.25,61.61 591.46,67.98 C598.66,74.36 613.11,88.21 617.68,94.46 C622.26,100.7 620.08,98.79 618.91,105.46 C617.75,112.12 613.27,128.58 610.7,134.46 C608.12,140.33 608.26,139.18 603.46,140.68 C598.65,142.18 583.67,142.42 581.84,143.46 C580.01,144.49 591.8,144.37 592.46,146.87 C593.11,149.37 587.94,155.82 585.77,158.46 C583.6,161.09 584.01,161.76 579.46,162.68 C574.9,163.61 565.62,162.74 558.46,164 C551.29,165.26 547.5,164.32 536.46,170.23 C525.42,176.14 500.79,189.58 492.21,199.46 C483.64,209.33 485.83,219.96 485,229.46 C484.17,238.96 485.65,250.08 487.23,256.46 C488.8,262.83 488.91,264.53 494.46,267.7 C500,270.86 515.81,272.83 520.52,275.46 C525.22,278.08 523.36,281.25 522.68,283.46 C522.01,285.66 527.49,287.77 516.46,288.68 C505.42,289.6 467.62,289.29 456.46,288.96 C445.29,288.62 453.53,289.6 449.46,286.68 C445.38,283.77 437.57,278.16 431.98,271.46 C426.4,264.75 420.54,251.21 415.95,246.46 C411.36,241.71 408.7,242.53 404.46,242.96 C400.21,243.38 394.53,245.4 390.46,248.98 C386.38,252.57 381.17,261.18 380,264.46 C378.83,267.73 380.05,266.86 383.46,268.65 C386.86,270.44 395.62,272.8 400.46,275.18 C405.29,277.57 410.25,280.58 412.46,282.96 C414.66,285.34 414.35,287.63 413.68,289.46 C413.02,291.28 434.99,293.17 408.46,293.91 C381.92,294.65 284.96,294.78 254.46,293.91 C223.96,293.04 233.96,291 225.46,288.68 C216.96,286.36 214.62,277.33 203.46,280 C192.29,282.67 171.62,298.11 158.46,304.73 C145.29,311.34 134.12,315.99 124.46,319.68 C114.79,323.38 109.62,324.87 100.46,326.91 C91.29,328.96 78.96,331.29 69.46,331.96 C59.96,332.62 50.46,331.79 43.46,330.91 C36.46,330.03 32.46,328.85 27.46,326.68 C22.46,324.52 16.83,320.96 13.46,317.92 C10.08,314.88 8.47,311.87 7.23,308.46 Z"/>
+                </svg>
+            </div>
+
+            <div>
+                <div class="brand-name">Habitus</div>
+                <div class="brand-subtitle">Görev &amp; alışkanlık</div>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <button class="nav-item active" data-page="home" type="button">
+                <span class="nav-icon">⌂</span>
+                <span>Ana Sayfa</span>
+            </button>
+
+            <button class="nav-item" data-page="tasks" type="button">
+                <span class="nav-icon">✓</span>
+                <span>Görevler</span>
+            </button>
+
+            <button class="nav-item" data-page="calendar" type="button">
+                <span class="nav-icon">▦</span>
+                <span>Takvim</span>
+            </button>
+
+            <button class="nav-item" data-page="goals" type="button">
+                <span class="nav-icon">🎯</span>
+                <span>Hedefler</span>
+            </button>
+
+            <button class="nav-item" data-page="streaks" type="button">
+                <span class="nav-icon">🔥</span>
+                <span>Seriler</span>
+            </button>
+
+            <button class="nav-item" data-page="notes" type="button">
+                <span class="nav-icon">📝</span>
+                <span>Notlar</span>
+            </button>
+
+            <button class="nav-item" data-page="media" type="button">
+                <span class="nav-icon">🖼</span>
+                <span>Fotoğraflar</span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <button
+                id="open-settings"
+                class="sidebar-settings-button"
+                type="button"
+            >
+                <span class="nav-icon">⚙</span>
+                <span>Ayarlar</span>
+            </button>
+
+            <div class="sidebar-tip">
+                <span class="tip-icon">✦</span>
+
+                <div>
+                    <strong>Küçük adımlar</strong>
+                    <span>büyük sonuçlar getirir.</span>
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+
+    <!-- =====================================================
+         ANA ALAN
+         ===================================================== -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <button
+                id="mobile-menu"
+                class="mobile-menu"
+                type="button"
+                aria-label="Menüyü aç"
+            >
+                ☰
+            </button>
+
+            <div class="topbar-heading">
+                <h1 id="page-title">Ana Sayfa</h1>
+                <p id="page-subtitle">Bugün ne yapacaksın?</p>
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="topbar-date">
+                    <div id="current-time">--:--</div>
+                    <div id="current-date">--</div>
+                </div>
+
+                <button
+                    id="topbar-add-task"
+                    class="icon-button"
+                    type="button"
+                    title="Yeni görev (Ctrl+N)"
+                    aria-label="Yeni görev"
+                >
+                    +
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <div class="pages">
+
+
+            <!-- =============================================
+                 ANA SAYFA
+                 ============================================= -->
+
+            <section id="page-home" class="page active">
+
+                <div class="home-layout">
+
+                    <div class="home-main">
+
+                        <!-- GÜNÜN SÖZÜ -->
+
+                        <div
+                            id="quote-of-day"
+                            class="quote-card"
+                        >
+                            <span class="quote-mark">"</span>
+                            <p id="quote-of-day-text" class="quote-text">—</p>
+                        </div>
+
+                        <!-- GÜNÜN OTOMATİK ÖZETİ (kural tabanlı) -->
+
+                        <div class="daily-summary-card">
+
+                            <span class="daily-summary-icon">📊</span>
+
+                            <div class="daily-summary-body">
+                                <strong class="daily-summary-title">Bugünün özeti</strong>
+                                <p id="daily-summary-text" class="daily-summary-text">—</p>
+                            </div>
+
+                        </div>
+
+                        <div class="section-header">
+
+                            <div>
+                                <h2>Bugünkü görevler</h2>
+                                <p>Bugün tamamlamak istediklerin.</p>
+                            </div>
+
+                            <button
+                                class="primary-button add-task-button"
+                                type="button"
+                            >
+                                + Görev Ekle
+                            </button>
+
+                        </div>
+
+                        <div
+                            id="home-task-list"
+                            class="home-task-list"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- ANA SAYFA SAĞ -->
+
+                    <aside class="home-right">
+
+                        <!-- HIZLI NOT WIDGET -->
+
+                        <div class="quick-note-card">
+
+                            <div class="quick-note-header">
+                                <span class="quick-note-icon">📝</span>
+                                <strong>Hızlı Not</strong>
+                            </div>
+
+                            <textarea
+                                id="quick-note-input"
+                                class="quick-note-textarea"
+                                rows="3"
+                                maxlength="500"
+                                placeholder="Aklında ne var?"
+                            ></textarea>
+
+                            <div class="quick-note-actions">
+                                <button
+                                    id="quick-note-save"
+                                    type="button"
+                                    class="primary-button"
+                                >
+                                    Kaydet
+                                </button>
+                            </div>
+
+                            <div
+                                id="quick-note-widget-list"
+                                class="day-panel-list quick-note-widget-list"
+                            ></div>
+
+                            <button
+                                id="quick-note-see-all"
+                                type="button"
+                                class="secondary-button quick-note-see-all"
+                                hidden
+                            >
+                                Tüm notlar
+                            </button>
+
+                        </div>
+
+                        <div class="big-streak-card">
+
+                            <div class="streak-card-top">
+                                <span>En uzun aktif seri</span>
+                                <span class="fire">🔥</span>
+                            </div>
+
+                            <div
+                                id="right-streak-value"
+                                class="big-streak-number"
+                            >
+                                0
+                            </div>
+
+                            <div
+                                id="right-streak-task"
+                                class="big-streak-task"
+                            >
+                                Henüz görev yok
+                            </div>
+
+                        </div>
+
+
+                        <div class="mini-stats">
+
+                            <div class="mini-stat">
+                                <span>Bugün</span>
+                                <strong id="stat-today">0</strong>
+                            </div>
+
+                            <div class="mini-stat">
+                                <span>Görev</span>
+                                <strong id="stat-total">0</strong>
+                            </div>
+
+                            <div class="mini-stat">
+                                <span>Hafta</span>
+                                <strong id="stat-weekly-mini">0%</strong>
+                            </div>
+
+                            <div class="mini-stat">
+                                <span>En iyi seri</span>
+                                <strong id="stat-best-mini">0</strong>
+                            </div>
+
+                        </div>
+
+
+                        <div class="weekly-card">
+
+                            <div class="weekly-header">
+
+                                <div>
+                                    <strong>Haftalık ilerleme</strong>
+                                    <span>Son 7 gün</span>
+                                </div>
+
+                            </div>
+
+                            <div class="progress-track">
+                                <div
+                                    id="overall-progress-fill"
+                                    class="progress-fill"
+                                    style="width:0%"
+                                ></div>
+                            </div>
+
+                        </div>
+
+
+                        <!-- HAFTALIK BÖLÜM -->
+
+                        <div class="weekly-activity-card">
+
+                            <div class="weekly-activity-header">
+                                <strong>Haftalık aktivite</strong>
+                                <span>Gün gün ilerleme</span>
+                            </div>
+
+                            <div
+                                id="weekly-activity-chart"
+                                class="weekly-activity-chart"
+                            ></div>
+
+                        </div>
+
+                    </aside>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 GÖREVLER
+                 ============================================= -->
+
+            <section id="page-tasks" class="page">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>Tüm görevler</h2>
+
+                        <p>
+                            Görevlerini oluştur, tamamla ve sırala.
+                        </p>
+
+                        <div
+                            id="task-counter"
+                            class="task-counter"
+                        >
+                            0/0 tamamlandı
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="primary-button add-task-button"
+                        type="button"
+                    >
+                        + Yeni görev
+                    </button>
+
+                </div>
+
+
+                <div class="task-toolbar">
+
+                    <div class="search-box">
+                        <span>⌕</span>
+
+                        <input
+                            id="task-search"
+                            type="search"
+                            placeholder="Görevlerde ara..."
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <div
+                        class="category-filter"
+                        id="category-filter"
+                    ></div>
+
+                </div>
+
+
+                <div
+                    id="task-list"
+                    class="task-list"
+                ></div>
+
+            </section>
+
+
+            <!-- =============================================
+                 TAKVİM
+                 ============================================= -->
+
+            <section id="page-calendar" class="page">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Takvim</h2>
+
+                        <p>
+                            Günlerini, resmi tatilleri ve önemli tarihleri takip et.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="calendar-layout">
+
+
+                    <!-- TAKVİM -->
+
+                    <div class="calendar-card">
+
+                        <div class="calendar-header">
+
+                            <button
+                                id="previous-month"
+                                class="calendar-button"
+                                type="button"
+                                title="Önceki ay"
+                            >
+                                ‹
+                            </button>
+
+                            <h2 id="calendar-month-title">
+                                Ağustos 2026
+                            </h2>
+
+                            <button
+                                id="next-month"
+                                class="calendar-button"
+                                type="button"
+                                title="Sonraki ay"
+                            >
+                                ›
+                            </button>
+
+                        </div>
+
+
+                        <button
+                            id="calendar-today"
+                            class="today-button"
+                            type="button"
+                        >
+                            Bugüne dön
+                        </button>
+
+
+                        <div class="calendar-weekdays">
+
+                            <span>Pzt</span>
+                            <span>Sal</span>
+                            <span>Çar</span>
+                            <span>Per</span>
+                            <span>Cum</span>
+                            <span>Cmt</span>
+                            <span>Paz</span>
+
+                        </div>
+
+
+                        <div
+                            id="calendar-grid"
+                            class="calendar-grid"
+                        ></div>
+
+
+                        <div class="calendar-legend">
+
+                            <span>
+                                <i class="legend-dot holiday"></i>
+                                Resmî tatil
+                            </span>
+
+                            <span>
+                                <i class="legend-dot event"></i>
+                                Önemli gün
+                            </span>
+
+                            <span>
+                                <i class="legend-dot task"></i>
+                                Görev
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- TAKVİM ETKİNLİKLERİ -->
+
+                    <div class="calendar-events-card">
+
+                        <div class="events-card-header">
+
+                            <h3 id="calendar-events-title">
+                                Bu ay
+                            </h3>
+
+                            <span>GENEL TAKVİM</span>
+
+                        </div>
+
+                        <div
+                            id="calendar-events-list"
+                            class="calendar-events-list"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     GÜN PANELİ
+                     ========================================= -->
+
+                <div class="day-panel-card">
+
+                    <div class="day-panel-header">
+
+                        <div class="day-panel-heading">
+
+                            <span
+                                id="day-panel-badge"
+                                class="day-panel-badge"
+                            >Bugün</span>
+
+                            <h2 id="day-panel-date">--</h2>
+
+                            <p id="day-panel-weekday">--</p>
+
+                        </div>
+
+                        <button
+                            id="day-panel-today-button"
+                            class="today-button"
+                            type="button"
+                        >
+                            Bugüne dön
+                        </button>
+
+                    </div>
+
+                    <div
+                        id="day-panel-special"
+                        class="day-panel-special"
+                        hidden
+                    ></div>
+
+                    <div class="day-panel-grid">
+
+                        <!-- GÜNLÜK PLAN -->
+
+                        <div class="day-panel-subcard">
+
+                            <div class="day-panel-subcard-header">
+                                <h3>Günlük plan</h3>
+                            </div>
+
+                            <form
+                                id="daily-plan-form"
+                                class="day-panel-form day-panel-form-plan"
+                            >
+                                <input
+                                    id="daily-plan-time"
+                                    type="time"
+                                    required
+                                    aria-label="Saat"
+                                >
+                                <input
+                                    id="daily-plan-title"
+                                    type="text"
+                                    maxlength="80"
+                                    placeholder="Ne yapılacak?"
+                                    autocomplete="off"
+                                    required
+                                    aria-label="Plan başlığı"
+                                >
+                                <button
+                                    type="submit"
+                                    class="secondary-button"
+                                >
+                                    Ekle
+                                </button>
+                            </form>
+
+                            <div
+                                id="daily-plan-list"
+                                class="day-panel-list"
+                            ></div>
+
+                        </div>
+
+                        <!-- NOTLAR -->
+
+                        <div class="day-panel-subcard">
+
+                            <div class="day-panel-subcard-header">
+                                <h3>Günlük Notlar</h3>
+                            </div>
+
+                            <form
+                                id="day-notes-form"
+                                class="day-panel-form"
+                            >
+                                <input
+                                    id="day-note-text"
+                                    type="text"
+                                    maxlength="200"
+                                    placeholder="Not ekle..."
+                                    autocomplete="off"
+                                    required
+                                    aria-label="Not"
+                                >
+                                <button
+                                    type="submit"
+                                    class="secondary-button"
+                                >
+                                    Ekle
+                                </button>
+                            </form>
+
+                            <div
+                                id="day-notes-list"
+                                class="day-panel-list"
+                            ></div>
+
+                        </div>
+
+                        <!-- ÖDEVLER -->
+
+                        <div class="day-panel-subcard">
+
+                            <div class="day-panel-subcard-header">
+                                <h3>Ödevler</h3>
+                            </div>
+
+                            <form
+                                id="day-homework-form"
+                                class="day-panel-form"
+                            >
+                                <input
+                                    id="day-homework-title"
+                                    type="text"
+                                    maxlength="120"
+                                    placeholder="Ödev ekle..."
+                                    autocomplete="off"
+                                    required
+                                    aria-label="Ödev"
+                                >
+                                <button
+                                    type="submit"
+                                    class="secondary-button"
+                                >
+                                    Ekle
+                                </button>
+                            </form>
+
+                            <div
+                                id="day-homework-list"
+                                class="day-panel-list"
+                            ></div>
+
+                        </div>
+
+                        <!-- PROJELER -->
+
+                        <div class="day-panel-subcard">
+
+                            <div class="day-panel-subcard-header">
+                                <h3>Projeler</h3>
+                            </div>
+
+                            <form
+                                id="day-projects-form"
+                                class="day-panel-form"
+                            >
+                                <input
+                                    id="day-project-title"
+                                    type="text"
+                                    maxlength="120"
+                                    placeholder="Proje ekle..."
+                                    autocomplete="off"
+                                    required
+                                    aria-label="Proje"
+                                >
+                                <button
+                                    type="submit"
+                                    class="secondary-button"
+                                >
+                                    Ekle
+                                </button>
+                            </form>
+
+                            <div
+                                id="day-projects-list"
+                                class="day-panel-list"
+                            ></div>
+
+                        </div>
+
+                        <!-- O GÜN TAMAMLANAN GÖREVLER -->
+
+                        <div class="day-panel-subcard">
+
+                            <div class="day-panel-subcard-header">
+                                <h3>O gün tamamlanan görevler</h3>
+                            </div>
+
+                            <div
+                                id="day-panel-tasks"
+                                class="day-panel-list"
+                            ></div>
+
+                        </div>
+
+                        <!-- O GÜNÜN MEDYASI -->
+
+                        <div class="day-panel-subcard">
+
+                            <div class="day-panel-subcard-header day-panel-media-header">
+                                <h3>Fotoğraf &amp; ses</h3>
+
+                                <label
+                                    for="day-panel-media-input"
+                                    class="icon-mini-button"
+                                    title="Bu güne fotoğraf ekle"
+                                    aria-label="Bu güne fotoğraf ekle"
+                                >
+                                    +
+                                </label>
+
+                                <input
+                                    id="day-panel-media-input"
+                                    type="file"
+                                    accept="image/jpeg,image/png,image/webp,image/gif"
+                                    multiple
+                                    hidden
+                                >
+                            </div>
+
+                            <div
+                                id="day-panel-media"
+                                class="day-panel-media-grid"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 SERİLER
+                 ============================================= -->
+
+            <section id="page-streaks" class="page">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>Seriler</h2>
+
+                        <p>
+                            Devamlılığını koru.
+                        </p>
+
+                    </div>
+
+                    <div class="streak-summary">
+
+                        <span>En iyi seri</span>
+
+                        <strong id="stat-best">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="streak-list"
+                    class="streak-list"
+                ></div>
+
+
+                <!-- =========================================
+                     ROZETLER
+                     ========================================= -->
+
+                <div class="section-header badge-section-header">
+
+                    <div>
+                        <h2>Rozetler</h2>
+                        <p>Kazandığın başarı rozetleri.</p>
+                    </div>
+
+                    <div
+                        id="badge-earned-count"
+                        class="task-counter"
+                    >
+                        0/0 kazanıldı
+                    </div>
+
+                </div>
+
+                <div
+                    id="badge-grid"
+                    class="badge-grid"
+                ></div>
+
+            </section>
+
+
+            <!-- =============================================
+                 HEDEFLER
+                 ============================================= -->
+
+            <section id="page-goals" class="page">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Hedeflerim</h2>
+
+                        <p>
+                            Haftalık, aylık ve özel dönem hedeflerini
+                            takip et.
+                        </p>
+                    </div>
+
+                    <button
+                        id="goal-add-button"
+                        class="primary-button"
+                        type="button"
+                    >
+                        + Yeni hedef
+                    </button>
+
+                </div>
+
+
+                <div class="media-tabs" role="tablist">
+
+                    <button
+                        type="button"
+                        class="media-tab active"
+                        data-goals-tab="active"
+                    >
+                        Aktif
+                    </button>
+
+                    <button
+                        type="button"
+                        class="media-tab"
+                        data-goals-tab="history"
+                    >
+                        Geçmiş
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="goals-active-panel"
+                    class="media-panel active"
+                >
+
+                    <div
+                        id="goals-active-list"
+                        class="streak-list"
+                    ></div>
+
+                </div>
+
+
+                <div
+                    id="goals-history-panel"
+                    class="media-panel"
+                >
+
+                    <div
+                        id="goals-history-summary"
+                        class="goal-history-summary"
+                        hidden
+                    ></div>
+
+                    <div class="goal-history-controls">
+
+                        <label
+                            for="goals-history-hide-missed"
+                            class="goal-history-hide-toggle"
+                        >
+                            <input
+                                id="goals-history-hide-missed"
+                                type="checkbox"
+                            >
+                            <span>Tamamlanmayanları gizle</span>
+                        </label>
+
+                    </div>
+
+                    <div
+                        id="goals-history-list"
+                        class="goal-history-list"
+                    ></div>
+
+                    <button
+                        id="goals-history-load-more"
+                        type="button"
+                        class="secondary-button media-load-more"
+                        hidden
+                    >
+                        Daha eski ayları göster
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 NOTLAR
+                 ============================================= -->
+
+            <section id="page-notes" class="page">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Notlar</h2>
+                        <p>Aklına gelenleri hızlıca kaydet.</p>
+                    </div>
+
+                </div>
+
+                <div class="day-panel-card">
+
+                    <div class="day-panel-subcard">
+
+                        <div class="day-panel-subcard-header">
+                            <h3>Yeni not</h3>
+                        </div>
+
+                        <div class="quick-note-form">
+
+                            <textarea
+                                id="notes-page-input"
+                                class="quick-note-textarea"
+                                rows="3"
+                                maxlength="500"
+                                placeholder="Aklında ne var?"
+                            ></textarea>
+
+                            <button
+                                id="notes-page-save"
+                                type="button"
+                                class="primary-button"
+                            >
+                                Kaydet
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="notes-page-list"
+                    class="day-panel-list quick-note-page-list"
+                ></div>
+
+            </section>
+
+
+            <!-- =============================================
+                 FOTOĞRAFLAR / MEDYA
+                 ============================================= -->
+
+            <section id="page-media" class="page">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Fotoğraflar</h2>
+
+                        <p>
+                            Fotoğraflarını ve ses kayıtlarını
+                            ay ay arşivle.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="media-tabs" role="tablist">
+
+                    <button
+                        type="button"
+                        class="media-tab active"
+                        data-media-tab="photos"
+                    >
+                        Fotoğraflar
+                    </button>
+
+                    <button
+                        type="button"
+                        class="media-tab"
+                        data-media-tab="audio"
+                    >
+                        Sesler
+                    </button>
+
+                </div>
+
+
+                <div class="media-toolbar">
+
+                    <label
+                        for="media-photo-input"
+                        class="primary-button media-upload-label"
+                    >
+                        + Fotoğraf yükle
+                    </label>
+
+                    <input
+                        id="media-photo-input"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                        multiple
+                        hidden
+                    >
+
+                    <label
+                        for="media-audio-input"
+                        class="secondary-button media-upload-label"
+                    >
+                        + Ses yükle
+                    </label>
+
+                    <input
+                        id="media-audio-input"
+                        type="file"
+                        accept="audio/mpeg,audio/mp4,audio/wav,audio/ogg,audio/webm,audio/x-m4a,audio/aac"
+                        multiple
+                        hidden
+                    >
+
+                    <button
+                        id="media-audio-record-button"
+                        type="button"
+                        class="secondary-button media-upload-label"
+                    >
+                        🎙 Ses kaydet
+                    </button>
+
+                    <span
+                        id="media-upload-status"
+                        class="media-upload-status"
+                    ></span>
+
+                </div>
+
+
+                <div
+                    id="media-photos-panel"
+                    class="media-panel active"
+                >
+
+                    <div
+                        id="media-photo-groups"
+                        class="media-month-groups"
+                    ></div>
+
+                    <button
+                        id="media-load-more-months"
+                        type="button"
+                        class="secondary-button media-load-more"
+                        hidden
+                    >
+                        Daha fazla ay göster
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="media-audio-panel"
+                    class="media-panel"
+                >
+
+                    <div
+                        id="media-audio-list"
+                        class="audio-list"
+                    ></div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     GÖREV MODALI
+     ========================================================= -->
+
+<div
+    id="task-modal"
+    class="modal"
+    aria-hidden="true"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="modal-eyebrow">
+                    HABITUS
+                </span>
+
+                <h2 id="task-modal-title">
+                    Yeni görev
+                </h2>
+
+            </div>
+
+            <button
+                id="close-task-modal"
+                class="modal-close"
+                type="button"
+                aria-label="Kapat"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="task-form">
+
+            <label for="task-title">
+                Görev başlığı
+            </label>
+
+            <input
+                id="task-title"
+                type="text"
+                maxlength="100"
+                placeholder="Örn. Matematik çalış"
+                autocomplete="off"
+                required
+            >
+
+
+            <label>
+                Kategori
+            </label>
+
+            <div
+                id="category-picker"
+                class="category-picker"
+            ></div>
+
+
+            <label for="task-description">
+                Açıklama
+            </label>
+
+            <textarea
+                id="task-description"
+                rows="5"
+                maxlength="500"
+                placeholder="İstersen görev hakkında kısa bir açıklama yaz..."
+            ></textarea>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    id="cancel-task"
+                    class="secondary-button"
+                >
+                    İptal
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Kaydet
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     AYARLAR MODALI
+     ========================================================= -->
+
+<div
+    id="settings-modal"
+    class="modal"
+    aria-hidden="true"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="modal-eyebrow">
+                    HABITUS
+                </span>
+
+                <h2>Ayarlar</h2>
+
+            </div>
+
+            <button
+                id="close-settings-modal"
+                class="modal-close"
+                type="button"
+                aria-label="Kapat"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="settings-form">
+
+            <label for="day-reset-hour">
+                Yeni gün başlangıç saati
+            </label>
+
+            <select id="day-reset-hour">
+
+                <option value="0">
+                    00:00 (Gece yarısı)
+                </option>
+
+                <option value="1">
+                    01:00
+                </option>
+
+                <option value="2">
+                    02:00
+                </option>
+
+                <option value="3">
+                    03:00
+                </option>
+
+                <option value="4">
+                    04:00
+                </option>
+
+                <option value="5">
+                    05:00
+                </option>
+
+                <option value="6">
+                    06:00
+                </option>
+
+            </select>
+
+
+            <p class="field-hint">
+                Bu saatten önce yaptığın işaretlemeler hâlâ
+                "önceki gün" sayılır. Gece geç saatte çalışanlar için.
+            </p>
+
+
+            <label for="theme-select">
+                Tema
+            </label>
+
+            <select id="theme-select">
+
+                <option value="dark">
+                    Koyu
+                </option>
+
+                <option value="light">
+                    Açık
+                </option>
+
+            </select>
+
+
+            <label for="palette-select">
+                Renk paleti
+            </label>
+
+            <select id="palette-select">
+
+                <option value="monokrom">
+                    Monokrom
+                </option>
+
+                <option value="mor">
+                    Mor
+                </option>
+
+                <option value="mavi">
+                    Mavi
+                </option>
+
+                <option value="yesil">
+                    Yeşil
+                </option>
+
+                <option value="turuncu">
+                    Turuncu
+                </option>
+
+                <option value="kirmizi">
+                    Kırmızı
+                </option>
+
+            </select>
+
+
+            <label class="checkbox-row">
+
+                <input
+                    id="sound-enabled"
+                    type="checkbox"
+                    checked
+                >
+
+                <span>
+                    Görev tamamlarken ses ve parlama efekti
+                </span>
+
+            </label>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    id="cancel-settings"
+                    class="secondary-button"
+                >
+                    İptal
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Kaydet
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- =====================================================
+             KATEGORİ YÖNETİMİ
+             (Ekleme / düzenleme / silme — mevcut settings-form'un
+             DIŞINDA, ayrı bir form olarak; HTML'de form içine form
+             yerleştirilemez.)
+             ===================================================== -->
+
+        <div class="settings-divider"></div>
+
+        <h3 class="settings-subheading">Kategoriler</h3>
+
+        <p class="field-hint">
+            Bir kategoriyi silersen, o kategorideki görevler
+            "Diğer" kategorisine taşınır. Varsayılan kategori
+            ("Diğer") silinemez.
+        </p>
+
+        <div
+            id="category-manage-list"
+            class="category-manage-list"
+        ></div>
+
+        <form
+            id="category-add-form"
+            class="category-add-form"
+        >
+            <input
+                id="category-add-icon"
+                type="text"
+                maxlength="4"
+                placeholder="🏷️"
+                autocomplete="off"
+                aria-label="İkon (emoji)"
+            >
+
+            <input
+                id="category-add-name"
+                type="text"
+                maxlength="24"
+                placeholder="Yeni kategori adı"
+                autocomplete="off"
+                required
+                aria-label="Kategori adı"
+            >
+
+            <input
+                id="category-add-color"
+                type="color"
+                value="#8e8e93"
+                aria-label="Renk"
+            >
+
+            <button
+                type="submit"
+                class="secondary-button"
+            >
+                Ekle
+            </button>
+        </form>
+
+
+        <div class="settings-divider"></div>
+
+        <div class="settings-brand-footer">
+            <span class="settings-brand-footer-icon">
+                <svg viewBox="0 0 624.91 337.96" class="brand-logo-icon" aria-hidden="true">
+                    <path d="M7.23,308.46 C5.98,305.04 5.21,301.46 6,297.46 C6.79,293.46 8.63,288.79 11.98,284.46 C15.34,280.12 20.2,275.66 26.11,271.46 C32.03,267.25 37.07,263.6 47.46,259.23 C57.85,254.86 69.62,249.11 88.46,245.23 C107.29,241.34 146.71,238.37 160.46,235.91 C174.2,233.45 168.84,233.7 170.93,230.46 C173.01,227.21 173.28,228.96 172.96,216.46 C172.63,203.96 168.95,170.29 169,155.46 C169.05,140.62 170.69,137.62 173.23,127.46 C175.77,117.29 179.86,104.35 184.23,94.46 C188.6,84.57 193.17,76.78 199.46,68.11 C205.74,59.45 215.13,49.11 221.96,42.46 C228.79,35.81 233.04,32.75 240.46,28.21 C247.87,23.68 257.46,18.6 266.46,15.23 C275.46,11.86 283.79,9.54 294.46,8 C305.12,6.46 317.79,5.13 330.46,6 C343.12,6.87 356.29,8.78 370.46,13.23 C384.62,17.67 403.29,28.4 415.46,32.68 C427.62,36.96 434.29,37.71 443.46,38.91 C452.62,40.12 459.29,40.9 470.46,39.91 C481.62,38.93 493.12,30.28 510.46,33 C527.79,35.72 560.96,50.38 574.46,56.21 C587.96,62.04 584.25,61.61 591.46,67.98 C598.66,74.36 613.11,88.21 617.68,94.46 C622.26,100.7 620.08,98.79 618.91,105.46 C617.75,112.12 613.27,128.58 610.7,134.46 C608.12,140.33 608.26,139.18 603.46,140.68 C598.65,142.18 583.67,142.42 581.84,143.46 C580.01,144.49 591.8,144.37 592.46,146.87 C593.11,149.37 587.94,155.82 585.77,158.46 C583.6,161.09 584.01,161.76 579.46,162.68 C574.9,163.61 565.62,162.74 558.46,164 C551.29,165.26 547.5,164.32 536.46,170.23 C525.42,176.14 500.79,189.58 492.21,199.46 C483.64,209.33 485.83,219.96 485,229.46 C484.17,238.96 485.65,250.08 487.23,256.46 C488.8,262.83 488.91,264.53 494.46,267.7 C500,270.86 515.81,272.83 520.52,275.46 C525.22,278.08 523.36,281.25 522.68,283.46 C522.01,285.66 527.49,287.77 516.46,288.68 C505.42,289.6 467.62,289.29 456.46,288.96 C445.29,288.62 453.53,289.6 449.46,286.68 C445.38,283.77 437.57,278.16 431.98,271.46 C426.4,264.75 420.54,251.21 415.95,246.46 C411.36,241.71 408.7,242.53 404.46,242.96 C400.21,243.38 394.53,245.4 390.46,248.98 C386.38,252.57 381.17,261.18 380,264.46 C378.83,267.73 380.05,266.86 383.46,268.65 C386.86,270.44 395.62,272.8 400.46,275.18 C405.29,277.57 410.25,280.58 412.46,282.96 C414.66,285.34 414.35,287.63 413.68,289.46 C413.02,291.28 434.99,293.17 408.46,293.91 C381.92,294.65 284.96,294.78 254.46,293.91 C223.96,293.04 233.96,291 225.46,288.68 C216.96,286.36 214.62,277.33 203.46,280 C192.29,282.67 171.62,298.11 158.46,304.73 C145.29,311.34 134.12,315.99 124.46,319.68 C114.79,323.38 109.62,324.87 100.46,326.91 C91.29,328.96 78.96,331.29 69.46,331.96 C59.96,332.62 50.46,331.79 43.46,330.91 C36.46,330.03 32.46,328.85 27.46,326.68 C22.46,324.52 16.83,320.96 13.46,317.92 C10.08,314.88 8.47,311.87 7.23,308.46 Z"/>
+                </svg>
+            </span>
+            <span>Habitus</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     ONAY MODALI
+     (Silme/arşivleme gibi destructive action'lar için tek,
+     genel amaçlı onay modalı — native confirm() yerine.
+     Mevcut .modal / openModal() / closeModal() altyapısı
+     aynen kullanılır; bkz. 11-settings.js.)
+     ========================================================= -->
+
+<div
+    id="confirm-modal"
+    class="modal"
+    aria-hidden="true"
+>
+
+    <div class="modal-box confirm-modal-box">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="modal-eyebrow">
+                    HABITUS
+                </span>
+
+                <h2 id="confirm-modal-title">
+                    Emin misin?
+                </h2>
+
+            </div>
+
+            <button
+                id="close-confirm-modal"
+                class="modal-close"
+                type="button"
+                aria-label="Kapat"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <p
+            id="confirm-modal-message"
+            class="confirm-modal-message"
+        ></p>
+
+        <div class="modal-actions">
+
+            <button
+                type="button"
+                id="confirm-modal-cancel"
+                class="secondary-button"
+            >
+                İptal
+            </button>
+
+            <button
+                type="button"
+                id="confirm-modal-confirm"
+                class="primary-button"
+            >
+                Sil
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     HEDEF MODALI
+     (Oluşturma / yalnızca başlık-ikon düzenleme /
+     bağlantıyı yeniden kurma — tek modal, JS ile mod
+     bazlı bölüm gösterme/gizleme; bkz. 22-goals.js)
+     ========================================================= -->
+
+<div
+    id="goal-modal"
+    class="modal"
+    aria-hidden="true"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="modal-eyebrow">
+                    HABITUS
+                </span>
+
+                <h2 id="goal-modal-title">
+                    Yeni hedef
+                </h2>
+
+            </div>
+
+            <button
+                id="close-goal-modal"
+                class="modal-close"
+                type="button"
+                aria-label="Kapat"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="goal-form">
+
+            <label for="goal-title">
+                Başlık
+            </label>
+
+            <input
+                id="goal-title"
+                type="text"
+                maxlength="60"
+                placeholder="Örn. Haftada 4 gün spor"
+                autocomplete="off"
+                required
+            >
+
+
+            <label for="goal-icon-input">
+                İkon
+            </label>
+
+            <input
+                id="goal-icon-input"
+                type="text"
+                maxlength="4"
+                placeholder="🎯"
+                autocomplete="off"
+            >
+
+
+            <div id="goal-source-section" class="goal-form-section">
+
+                <label>
+                    Kaynak
+                </label>
+
+                <div
+                    id="goal-source-picker"
+                    class="category-picker"
+                >
+
+                    <button
+                        type="button"
+                        class="category-chip"
+                        data-source="linked"
+                    >
+                        Bir alışkanlığa bağla
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-chip"
+                        data-source="manual"
+                    >
+                        Manuel takip
+                    </button>
+
+                </div>
+
+                <div
+                    id="goal-task-picker-wrap"
+                    hidden
+                >
+
+                    <label for="goal-task-select">
+                        Görev
+                    </label>
+
+                    <select id="goal-task-select"></select>
+
+                    <p
+                        id="goal-task-preview"
+                        class="field-hint"
+                    ></p>
+
+                </div>
+
+            </div>
+
+
+            <div id="goal-target-section" class="goal-form-section">
+
+                <label>
+                    Hedef
+                </label>
+
+                <div class="goal-field-row">
+
+                    <input
+                        id="goal-target-amount"
+                        type="number"
+                        min="1"
+                        step="1"
+                        value="1"
+                        required
+                        aria-label="Hedef miktarı"
+                    >
+
+                    <input
+                        id="goal-target-unit"
+                        type="text"
+                        maxlength="20"
+                        placeholder="gün"
+                        autocomplete="off"
+                        required
+                        aria-label="Birim"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div id="goal-period-section" class="goal-form-section">
+
+                <label>
+                    Periyot
+                </label>
+
+                <div
+                    id="goal-period-picker"
+                    class="category-picker"
+                >
+
+                    <button
+                        type="button"
+                        class="category-chip"
+                        data-period="weekly"
+                    >
+                        Bu hafta
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-chip"
+                        data-period="monthly"
+                    >
+                        Bu ay
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-chip"
+                        data-period="custom"
+                    >
+                        Tarih aralığı
+                    </button>
+
+                </div>
+
+                <div
+                    id="goal-custom-dates"
+                    class="goal-field-row"
+                    hidden
+                >
+
+                    <input
+                        id="goal-start-date"
+                        type="date"
+                        aria-label="Başlangıç"
+                    >
+
+                    <input
+                        id="goal-end-date"
+                        type="date"
+                        aria-label="Bitiş"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    id="cancel-goal"
+                    class="secondary-button"
+                >
+                    İptal
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Kaydet
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     FOTOĞRAF DETAY MODALI
+     ========================================================= -->
+
+<div
+    id="media-modal"
+    class="modal"
+    aria-hidden="true"
+>
+
+    <div class="modal-box media-modal-box">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="modal-eyebrow">
+                    HABITUS
+                </span>
+
+                <h2>Fotoğraf</h2>
+
+            </div>
+
+            <button
+                id="close-media-modal"
+                class="modal-close"
+                type="button"
+                aria-label="Kapat"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="media-modal-image-wrap"
+            class="media-modal-image-wrap"
+        >
+            <img
+                id="media-modal-image"
+                class="media-modal-image"
+                alt=""
+            >
+        </div>
+
+        <div
+            id="media-modal-details"
+            class="media-detail-grid"
+        ></div>
+
+        <div class="media-ocr-section">
+
+            <div class="media-ocr-header">
+                <h3>Fotoğraftaki yazı (OCR)</h3>
+
+                <button
+                    id="media-ocr-copy"
+                    type="button"
+                    class="icon-mini-button"
+                    title="Metni kopyala"
+                    aria-label="Metni kopyala"
+                    hidden
+                >
+                    ⧉
+                </button>
+            </div>
+
+            <div
+                id="media-ocr-text"
+                class="media-ocr-text"
+            ></div>
+
+        </div>
+
+        <div class="modal-actions media-modal-actions">
+
+            <button
+                id="media-modal-delete"
+                type="button"
+                class="secondary-button media-delete-button"
+            >
+                Sil
+            </button>
+
+            <button
+                id="media-modal-close-button"
+                type="button"
+                class="primary-button"
+            >
+                Kapat
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SES KAYDI MODALI
+     ========================================================= -->
+
+<div
+    id="record-audio-modal"
+    class="modal"
+    aria-hidden="true"
+>
+
+    <div class="modal-box record-modal-box">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="modal-eyebrow">
+                    HABITUS
+                </span>
+
+                <h2>Ses kaydet</h2>
+
+            </div>
+
+            <button
+                id="close-record-modal"
+                class="modal-close"
+                type="button"
+                aria-label="Kapat"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="record-error"
+            class="record-error"
+            hidden
+        ></div>
+
+        <div class="record-status-area">
+
+            <div
+                id="record-indicator"
+                class="record-indicator"
+            >
+                <span class="record-dot"></span>
+                <span id="record-indicator-label">Hazır</span>
+            </div>
+
+            <div
+                id="record-timer"
+                class="record-timer"
+            >
+                00:00
+            </div>
+
+        </div>
+
+        <audio
+            id="record-playback"
+            class="record-playback"
+            controls
+            hidden
+        ></audio>
+
+        <div class="record-controls">
+
+            <button
+                id="record-start"
+                type="button"
+                class="primary-button"
+            >
+                ● Kaydı başlat
+            </button>
+
+            <button
+                id="record-pause"
+                type="button"
+                class="secondary-button"
+                hidden
+            >
+                ⏸ Duraklat
+            </button>
+
+            <button
+                id="record-stop"
+                type="button"
+                class="secondary-button"
+                hidden
+            >
+                ■ Kaydı bitir
+            </button>
+
+            <button
+                id="record-rerecord"
+                type="button"
+                class="secondary-button"
+                hidden
+            >
+                ↺ Yeniden kaydet
+            </button>
+
+        </div>
+
+        <div class="modal-actions record-modal-actions">
+
+            <button
+                id="record-cancel"
+                type="button"
+                class="secondary-button"
+            >
+                İptal
+            </button>
+
+            <button
+                id="record-save"
+                type="button"
+                class="primary-button"
+                hidden
+                disabled
+            >
+                Kaydet
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     KISAYOL İPUCU
+     ========================================================= -->
+
+<div
+    id="shortcut-hint"
+    class="shortcut-hint"
+    aria-hidden="true"
+></div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script src="js/01-constants.js"></script>
+<script src="js/02-init.js"></script>
+<script src="js/03-data-store.js"></script>
+<script src="js/04-day-panel.js"></script>
+<script src="js/05-navigation.js"></script>
+<script src="js/06-shortcuts.js"></script>
+<script src="js/07-home.js"></script>
+<script src="js/08-tasks.js"></script>
+<script src="js/09-categories.js"></script>
+<script src="js/10-task-actions.js"></script>
+<script src="js/11-settings.js"></script>
+<script src="js/12-stats.js"></script>
+<script src="js/13-calendar.js"></script>
+<script src="js/14-media-core.js"></script>
+<script src="js/15-media-upload.js"></script>
+<script src="js/16-media-ocr.js"></script>
+<script src="js/17-media-render.js"></script>
+<script src="js/19-media-record.js"></script>
+<script src="js/20-badges.js"></script>
+<script src="js/21-daily-summary.js"></script>
+<script src="js/22-goals.js"></script>
+<script src="js/23-quick-notes.js"></script>
+<script src="js/18-utils.js"></script>
+
+</body>
+</html>

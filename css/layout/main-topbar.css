@@ -1,0 +1,131 @@
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.main {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    height: 92px;
+    padding: 0 38px;
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.topbar-heading {
+    min-width: 0;
+}
+
+.topbar-heading h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.7px;
+}
+
+.topbar-heading p {
+    margin: 5px 0 0;
+    color: var(--muted-2);
+    font-size: 13px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 0 0 auto;
+}
+
+.topbar-date {
+    text-align: right;
+}
+
+#current-time {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+#current-date {
+    margin-top: 4px;
+    color: var(--muted-3);
+    font-size: 11px;
+    text-transform: capitalize;
+}
+
+.icon-button {
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 18px;
+    font-weight: 700;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.12s ease,
+        background 0.12s ease;
+}
+
+.icon-button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.icon-button:active {
+    transform: translateY(0) scale(0.96);
+}
+
+.icon-button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.mobile-menu {
+    display: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    font-size: 16px;
+
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   PAGES
+   ========================================================= */
+
+.pages {
+    flex: 1;
+    min-height: 0;
+}
+
+.page {
+    display: none;
+    padding: 34px 38px 50px;
+}
+
+.page.active {
+    display: block;
+}
+

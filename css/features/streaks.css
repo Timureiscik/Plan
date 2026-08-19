@@ -1,0 +1,84 @@
+/* =========================================================
+   STREAKS
+   ========================================================= */
+
+.streak-summary {
+    text-align: right;
+}
+
+.streak-summary span {
+    display: block;
+    color: var(--muted-2);
+    font-size: 10px;
+}
+
+.streak-summary strong {
+    display: block;
+    margin-top: 4px;
+    font-size: 20px;
+}
+
+.streak-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.streak-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--panel-2);
+}
+
+.streak-item-icon {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--panel-3);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+}
+
+.streak-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.streak-item-title {
+    font-size: 13px;
+    font-weight: 650;
+    color: var(--text);
+}
+
+.streak-item-sub {
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--muted-2);
+}
+
+.streak-item-value {
+    text-align: right;
+    flex: 0 0 auto;
+}
+
+.streak-item-value strong {
+    display: block;
+    font-size: 20px;
+}
+
+.streak-item-value span {
+    display: block;
+    font-size: 10px;
+    color: var(--muted-2);
+    margin-top: 2px;
+}
+

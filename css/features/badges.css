@@ -1,0 +1,63 @@
+/* =========================================================
+   ROZETLER
+   ========================================================= */
+
+.badge-section-header {
+    margin-top: 30px;
+}
+
+.badge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.badge-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    text-align: center;
+
+    transition:
+        border-color 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.badge-item.is-locked {
+    opacity: 0.45;
+}
+
+.badge-item.is-earned {
+    border-color: var(--border-strong);
+}
+
+.badge-item-icon {
+    font-size: 26px;
+    line-height: 1;
+}
+
+.badge-item-name {
+    font-size: 11.5px;
+    font-weight: 650;
+    color: var(--text);
+}
+
+.badge-item-desc {
+    font-size: 10px;
+    line-height: 1.4;
+    color: var(--muted-2);
+}
+
+@media (max-width: 520px) {
+
+    .badge-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+}
+

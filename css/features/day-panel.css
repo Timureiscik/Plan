@@ -1,0 +1,221 @@
+/* =========================================================
+   GÜN PANELİ
+   ========================================================= */
+
+.day-panel-card {
+    margin-top: 22px;
+    padding: 20px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.day-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.day-panel-heading h2 {
+    margin: 6px 0 2px;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.day-panel-heading p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
+.day-panel-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 100px;
+    background: rgba(88, 214, 141, 0.16);
+    color: var(--good);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.day-panel-badge.is-past {
+    background: rgba(142, 142, 147, 0.16);
+    color: var(--muted);
+}
+
+.day-panel-badge.is-future {
+    background: rgba(91, 141, 239, 0.16);
+    color: #8ab0f5;
+}
+
+.day-panel-special {
+    margin-bottom: 14px;
+    padding: 10px 14px;
+    border-radius: 9px;
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.25);
+    color: #ff9d9d;
+    font-size: 12px;
+}
+
+.day-panel-special.is-november-10 {
+    background: #000000;
+    border-color: #000000;
+    color: #ffffff;
+}
+
+.day-panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+}
+
+.day-panel-subcard {
+    min-width: 0;
+    padding: 14px;
+    border-radius: 11px;
+    background: var(--panel-3);
+    border: 1px solid var(--border);
+}
+
+.day-panel-subcard-header {
+    margin-bottom: 10px;
+}
+
+.day-panel-subcard-header h3 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 650;
+    color: var(--text-dim);
+}
+
+.day-panel-form {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.day-panel-form input {
+    flex: 1 1 120px;
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-2);
+    background: var(--panel-3);
+    color: var(--text);
+    font-size: 12px;
+}
+
+.day-panel-form-plan input#daily-plan-time {
+    flex: 0 1 90px;
+}
+
+.day-panel-form button {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+.day-panel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.day-panel-empty {
+    color: var(--muted-2);
+    font-size: 11px;
+    padding: 6px 2px;
+}
+
+.day-panel-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 9px;
+    border-radius: 8px;
+    background: var(--panel-3);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    min-width: 0;
+}
+
+.day-panel-item-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    word-break: break-word;
+}
+
+.day-panel-item-time {
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    font-size: 11px;
+}
+
+.day-panel-item.is-done .day-panel-item-text {
+    text-decoration: line-through;
+    color: var(--muted-2);
+}
+
+.day-panel-item-check {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    border: 1px solid var(--border-2);
+    background: transparent;
+    color: var(--good);
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.day-panel-item-check.checked {
+    background: rgba(88, 214, 141, 0.18);
+    border-color: var(--good);
+}
+
+.day-panel-item-delete {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.day-panel-item-delete:hover {
+    color: #ff9d9d;
+}
+
+@media (max-width: 640px) {
+
+    .day-panel-header {
+        flex-direction: column;
+    }
+
+    .day-panel-form {
+        flex-direction: column;
+    }
+
+    .day-panel-form button {
+        width: 100%;
+    }
+
+}
+

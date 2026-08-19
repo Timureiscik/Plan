@@ -1,0 +1,92 @@
+/* =========================================================
+   MOBİL
+   ========================================================= */
+
+@media (max-width: 880px) {
+
+    .mobile-menu {
+        display: flex;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+
+        transform: translateX(-100%);
+        transition: transform 0.2s ease;
+    }
+
+    body.sidebar-open .sidebar {
+        transform: translateX(0);
+    }
+
+    body.sidebar-open .sidebar-overlay {
+        display: block;
+    }
+
+    .topbar {
+        height: auto;
+        min-height: 78px;
+        padding: 14px 18px;
+        flex-wrap: wrap;
+    }
+
+    .topbar-heading h1 {
+        font-size: 19px;
+    }
+
+    .page {
+        padding: 20px 16px 40px;
+    }
+
+    .home-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .mini-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .calendar-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-day {
+        min-height: 58px;
+    }
+
+    .calendar-day-event-label {
+        display: none;
+    }
+
+    .task-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-box {
+        max-width: none;
+    }
+
+    .task-card-main {
+        flex-wrap: wrap;
+    }
+
+    .task-card-actions {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 520px) {
+
+    .mini-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .weekly-activity-chart {
+        height: 70px;
+    }
+}
+

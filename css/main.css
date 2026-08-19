@@ -1,0 +1,36 @@
+/* =========================================================
+   HABITUS — main.css
+   Bu dosya, eskiden tek parça olan style.css'in mantıksal
+   modüllere bölünmüş halidir. @import sırası BİLEREK orijinal
+   style.css içindeki bölüm sırasıyla birebir aynıdır — CSS
+   cascade'i (aynı özgüllükte çakışan kurallarda "sonra gelen
+   kazanır" kuralı) bu sıraya bağlı olduğu için, klasör
+   yapısı (core/layout/components/features/responsive)
+   yalnızca dosyaları ORGANİZE eder; asıl sırayı belirleyen
+   aşağıdaki @import listesidir. Bu yüzden örn.
+   responsive/mobile.css, klasör ismine rağmen dosyanın
+   sonuna değil, orijinal dosyada gerçekten bulunduğu yere
+   (toast ile medya sekmesi arasına) import edilir.
+   ========================================================= */
+
+@import url("core/variables.css");
+@import url("core/reset.css");
+@import url("layout/app-shell.css");
+@import url("layout/main-topbar.css");
+@import url("components/buttons.css");
+@import url("features/home.css");
+@import url("features/tasks.css");
+@import url("features/streaks.css");
+@import url("features/calendar.css");
+@import url("features/day-panel.css");
+@import url("components/modal.css");
+@import url("components/category-management.css");
+@import url("components/toast.css");
+@import url("responsive/mobile.css");
+@import url("features/media.css");
+@import url("features/settings-brand-footer.css");
+@import url("features/record-modal.css");
+@import url("features/daily-summary.css");
+@import url("features/badges.css");
+@import url("features/goals.css");
+@import url("features/quick-notes.css");

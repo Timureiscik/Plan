@@ -1,0 +1,98 @@
+/* =========================================================
+   HIZLI NOT WIDGET (ANA SAYFA) + NOTLAR SAYFASI
+   ========================================================= */
+
+.quick-note-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 17px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: var(--panel-2);
+}
+
+.quick-note-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quick-note-icon {
+    font-size: 15px;
+}
+
+.quick-note-header strong {
+    font-size: 12px;
+}
+
+.quick-note-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 9px;
+    background: var(--panel);
+    border: 1px solid var(--border-2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 12.5px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 64px;
+}
+
+.quick-note-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.quick-note-actions .primary-button {
+    padding: 8px 14px;
+}
+
+.quick-note-widget-list {
+    max-height: 160px;
+}
+
+.quick-note-see-all {
+    width: 100%;
+}
+
+/*
+ * Kullanıcının textarea'da Enter ile açtığı satır sonlarını
+ * korur. .day-panel-item-text'in DİĞER kullanımları (ödev/
+ * proje/plan başlıkları) tek satırlık olduğu için bu kural
+ * ortak class'a değil, yalnızca not metnine eklenen bu
+ * modifier class'a uygulanıyor — bkz. aynı desen:
+ * .task-description-panel p { white-space: pre-wrap; }.
+ */
+.quick-note-text {
+    white-space: pre-wrap;
+}
+
+/* --- Notlar sayfası --- */
+
+.quick-note-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.quick-note-form .quick-note-textarea {
+    min-height: 80px;
+}
+
+.quick-note-form .primary-button {
+    align-self: flex-end;
+    padding: 10px 16px;
+}
+
+/*
+ * .day-panel-list'in temel davranışını (flex/gap/overflow)
+ * aynen kullanır; yalnızca sabit 220px yüksekliği kaldırır
+ * — Notlar sayfası kendi kaydırılabilir kutuya değil,
+ * sayfanın doğal akışına sahip olmalı.
+ */
+.quick-note-page-list {
+    max-height: none;
+}

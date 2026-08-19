@@ -1,0 +1,115 @@
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 19px;
+    letter-spacing: -0.3px;
+}
+
+.section-header p {
+    margin: 5px 0 0;
+    color: var(--muted-3);
+    font-size: 12px;
+}
+
+.task-counter {
+    margin-top: 10px;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: var(--panel-3);
+    border: 1px solid var(--border-2);
+    color: var(--text-dim);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.primary-button,
+.secondary-button {
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 650;
+
+    transition:
+        transform 0.12s ease,
+        opacity 0.12s ease,
+        background 0.12s ease;
+}
+
+.primary-button {
+    background: var(--primary);
+    color: var(--on-primary);
+}
+
+.primary-button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.secondary-button {
+    background: var(--panel-3);
+    color: var(--text-dim);
+    border: 1px solid var(--border-2);
+}
+
+.secondary-button:hover {
+    background: var(--surface-hover);
+}
+
+.secondary-button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.icon-mini-button {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: var(--panel-3);
+    border: 1px solid var(--border-2);
+    color: var(--muted);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    font-size: 13px;
+
+    transition:
+        background 0.12s ease,
+        color 0.12s ease;
+}
+
+.icon-mini-button:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+}
+
+.icon-mini-button:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.icon-mini-button.danger:hover {
+    color: #ff8a8a;
+    border-color: #4a2222;
+}
+

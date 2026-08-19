@@ -1,0 +1,183 @@
+/* =========================================================
+   APP
+   ========================================================= */
+
+.app {
+    min-height: 100vh;
+    display: flex;
+    background: var(--bg);
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+    width: 250px;
+    min-width: 250px;
+    min-height: 100vh;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    z-index: 40;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 10px 30px;
+}
+
+.brand-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: var(--primary);
+    color: var(--on-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.brand-logo-icon {
+    width: 64%;
+    height: 64%;
+    fill: currentColor;
+    display: block;
+}
+
+.brand-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+}
+
+.brand-subtitle {
+    margin-top: 3px;
+    color: var(--muted-2);
+    font-size: 11px;
+}
+
+/* SIDEBAR MENÜSÜNÜN DİKEY OLMASINI GARANTİLER */
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+    width: 100%;
+}
+
+.nav-item {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--muted);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.nav-item:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+}
+
+.nav-item.active {
+    background: var(--panel-3);
+    color: var(--text);
+    box-shadow: inset 2px 0 0 var(--primary);
+}
+
+.nav-icon {
+    width: 20px;
+    min-width: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-settings-button {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--muted);
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.sidebar-settings-button:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+}
+
+.sidebar-tip {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: var(--panel-2);
+}
+
+.tip-icon {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.sidebar-tip strong,
+.sidebar-tip span {
+    display: block;
+}
+
+.sidebar-tip strong {
+    font-size: 12px;
+    color: var(--text);
+}
+
+.sidebar-tip div span {
+    margin-top: 3px;
+    color: var(--muted-2);
+    font-size: 11px;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 35;
+}
+
