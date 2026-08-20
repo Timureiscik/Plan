@@ -259,7 +259,6 @@
     padding: 8px 10px;
     border-radius: 8px;
     background: var(--panel-3);
-    border: 1px solid var(--border);
 }
 
 .media-detail-row span {

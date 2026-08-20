@@ -297,7 +297,11 @@
     padding: 10px;
     border-radius: 9px;
     background: var(--panel-3);
-    border: 1px solid var(--border);
+    transition: background 0.12s ease;
+}
+
+.calendar-list-item:hover {
+    background: var(--surface-hover);
 }
 
 .calendar-list-date {

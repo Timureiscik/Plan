@@ -177,6 +177,10 @@
     outline: none;
 }
 
+.search-box:focus-within {
+    border-color: var(--border-strong);
+}
+
 .category-filter {
     display: flex;
     gap: 6px;

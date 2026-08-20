@@ -29,9 +29,13 @@
     padding: 7px 9px;
     border-radius: 8px;
     background: var(--panel-3);
-    border: 1px solid var(--border);
     font-size: 12px;
     min-width: 0;
+    transition: background 0.12s ease;
+}
+
+.category-manage-item:hover {
+    background: var(--surface-hover);
 }
 
 .category-manage-item .dot {

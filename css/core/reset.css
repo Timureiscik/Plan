@@ -41,3 +41,14 @@ select:focus-visible {
     outline-offset: 2px;
 }
 
+/*
+ * Kenarlığı olan girdi alanlarında odaklanıldığında kenarlık
+ * rengini de vurgular (checkbox/radio dışı). Kenarlıksız
+ * girdilerde (örn. arama kutusu) görsel etkisi yoktur.
+ */
+input:not([type="checkbox"]):not([type="radio"]):focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    border-color: var(--border-strong);
+}
+
