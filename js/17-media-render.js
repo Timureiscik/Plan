@@ -112,6 +112,16 @@ function renderMediaPage() {
 
     renderAudioList();
 
+    /*
+     * Medya bazlı rozetler mediaMetaList'ten türetildiği için,
+     * yükleme ve silme sonrası mevcut rozet render/feedback akışını
+     * da yenile. İlk IndexedDB yüklemesinde kutlama seed'i
+     * 02-init.js'te tamamlanır.
+     */
+    if (typeof renderBadges === "function") {
+        renderBadges();
+    }
+
 }
 
 function renderMediaMonthGroup(container, group) {
@@ -617,7 +627,7 @@ function setupMediaPage() {
         () => {
 
             if (openMediaId) {
-                deleteMediaRecord(openMediaId);
+                confirmMediaDeletion(openMediaId);
             }
 
         }
@@ -697,19 +707,19 @@ function setupMediaPage() {
         element => {
 
             if (element.dataset.mediaId) {
-                deleteMediaRecord(element.dataset.mediaId);
+                confirmMediaDeletion(element.dataset.mediaId);
             }
 
         }
     );
 
-    $$(".media-tab").forEach(tab => {
+    $$("#page-media .media-tab").forEach(tab => {
 
         tab.addEventListener("click", () => {
 
             activeMediaTab = tab.dataset.mediaTab;
 
-            $$(".media-tab").forEach(button => {
+            $$("#page-media .media-tab").forEach(button => {
 
                 button.classList.toggle(
                     "active",
@@ -718,7 +728,7 @@ function setupMediaPage() {
 
             });
 
-            $$(".media-panel").forEach(panel => {
+            $$("#page-media .media-panel").forEach(panel => {
 
                 const isPhotosPanel =
                     panel.id === "media-photos-panel";
@@ -732,6 +742,25 @@ function setupMediaPage() {
 
         });
 
+    });
+
+}
+
+function confirmMediaDeletion(id) {
+
+    const media =
+        mediaMetaList.find(item => item.id === id);
+
+    if (!media) {
+        return;
+    }
+
+    openConfirmModal({
+        title: "Medyayı sil",
+        message:
+            `"${media.originalFilename}" öğesini silmek istediğine emin misin?`,
+        confirmLabel: "Sil",
+        onConfirm: () => deleteMediaRecord(id)
     });
 
 }

@@ -96,6 +96,14 @@ function updateGoalTaskPreview() {
         const startInput = $("#goal-start-date");
         const endInput = $("#goal-end-date");
 
+        if (startInput) {
+            startInput.setCustomValidity("");
+        }
+
+        if (endInput) {
+            endInput.setCustomValidity("");
+        }
+
         if (
             !startInput || !startInput.value ||
             !endInput || !endInput.value
@@ -419,6 +427,25 @@ function handleGoalSubmit(event) {
         endDate = endInput ? endInput.value : "";
 
         if (!startDate || !endDate || startDate > endDate) {
+
+            const invalidInput =
+                !startDate
+                    ? startInput
+                    : endInput;
+
+            if (invalidInput) {
+
+                invalidInput.setCustomValidity(
+                    startDate > endDate
+                        ? "Bitiş tarihi başlangıç tarihinden önce olamaz."
+                        : "Tarih aralığının iki tarihini de seç."
+                );
+
+                invalidInput.reportValidity();
+                invalidInput.focus();
+
+            }
+
             return;
         }
 

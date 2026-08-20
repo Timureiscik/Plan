@@ -72,10 +72,16 @@ document.addEventListener("DOMContentLoaded", () => {
      */
     loadMediaIndex().then(() => {
 
+        /*
+         * İlk asenkron medya indeksindeki mevcut rozetler yeni
+         * kazanım değildir; yalnızca sonradan eklenen medyada
+         * feedback gösterilmesi için bunları kutlama durumuna ekle.
+         */
+        seedBadgeCelebrations(getEarnedBadgeIds());
+
         renderMediaPage();
         renderDayPanelMedia();
 
     });
 
 });
-
