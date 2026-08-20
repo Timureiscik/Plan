@@ -393,3 +393,35 @@
         width: 100%;
     }
 }
+
+/* =========================================================
+   MEDYA SAYFASI — BAŞLIK HİYERARŞİSİ
+
+   Topbar'daki sayfa başlığı (h1 "Fotoğraflar") ile bu
+   bölüm başlığının (h2 "Fotoğraflar") tekrarını azaltmak
+   için bölüm başlığını alt düzey, küçük bir "eyebrow"
+   etiketine indirir; altındaki açıklama metnini küçültür
+   ve dikey boşluğu sıkıştırır. İki başlık görsel ağırlıkça
+   ayrışır, içerik daha erken başlar. Yalnızca medya sayfası.
+   ========================================================= */
+
+#page-media .section-header {
+    margin-bottom: 14px;
+}
+
+#page-media .section-header h2 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+}
+
+#page-media .section-header p {
+    margin-top: 3px;
+    font-size: 11px;
+}
+
+#page-media .media-tabs {
+    margin-bottom: 12px;
+}
