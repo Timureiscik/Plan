@@ -437,3 +437,18 @@
     flex: 0 0 92px;
 }
 
+/*
+ * HEDEF MODALI — GÖREV SEÇİMİ VALİDASYONU
+ * Yeni bir hata/validasyon sistemi İCAT EDİLMEDİ — mevcut
+ * .field-hint metnini geçici olarak hata rengine boyuyor
+ * (aynı #ff9d9d tonu .goal-broken-badge / confirm-modal-danger
+ * içinde zaten kullanılıyor) ve seçim kutusuna mevcut
+ * border-2 kalınlığında bir kırmızı kenarlık ekliyor.
+ */
+#goal-task-preview.is-error {
+    color: #ff9d9d;
+}
+
+#goal-form select.is-invalid {
+    border-color: #ff6b6b;
+}

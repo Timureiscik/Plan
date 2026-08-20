@@ -62,6 +62,15 @@ function updateGoalTaskPreview() {
         return;
     }
 
+    /*
+     * Kullanıcı seçimi değiştirdiğinde (ya da modal her
+     * açıldığında, renderGoalTaskSelect() bu fonksiyonu
+     * zaten çağırdığı için) önceki validasyon hatası varsa
+     * temizlenir — bkz. showGoalTaskValidationError().
+     */
+    select.classList.remove("is-invalid");
+    preview.classList.remove("is-error");
+
     const task =
         tasks.find(item => item.id === select.value);
 
@@ -113,6 +122,42 @@ function updateGoalTaskPreview() {
 
     preview.textContent =
         `Bu dönemde şu ana kadar: ${count} gün`;
+
+}
+
+/*
+ * HEDEF — GÖREV SEÇİMİ VALİDASYONU
+ * Yeni bir hata/validasyon bileşeni İCAT EDİLMEDİ — mevcut
+ * #goal-task-preview (.field-hint) elemanı geçici olarak
+ * hata mesajını taşır (.is-error class'ı yalnızca rengini
+ * değiştirir, bkz. goals.css), select kutusu .is-invalid
+ * ile vurgulanır ve odak/scroll ile kullanıcının dikkatine
+ * sunulur.
+ */
+function showGoalTaskValidationError(message) {
+
+    const select = $("#goal-task-select");
+    const preview = $("#goal-task-preview");
+
+    if (preview) {
+
+        preview.textContent = message;
+        preview.classList.add("is-error");
+
+    }
+
+    if (select) {
+
+        select.classList.add("is-invalid");
+
+        select.focus();
+
+        select.scrollIntoView({
+            block: "center",
+            behavior: "smooth"
+        });
+
+    }
 
 }
 
@@ -307,7 +352,27 @@ function handleGoalSubmit(event) {
         const select = $("#goal-task-select");
         const goal = goals.find(item => item.id === editingGoalId);
 
-        if (goal && select && select.value) {
+        if (tasks.length === 0) {
+
+            showGoalTaskValidationError(
+                "Önce yeni bir görev oluştur."
+            );
+
+            return;
+
+        }
+
+        if (!select || !select.value) {
+
+            showGoalTaskValidationError(
+                "Önce bir görev seç."
+            );
+
+            return;
+
+        }
+
+        if (goal) {
 
             goal.source.taskId = select.value;
             goal.linkBroken = false;
@@ -368,8 +433,24 @@ function handleGoalSubmit(event) {
 
         const select = $("#goal-task-select");
 
-        if (!select || !select.value) {
+        if (tasks.length === 0) {
+
+            showGoalTaskValidationError(
+                "Önce yeni bir görev oluştur."
+            );
+
             return;
+
+        }
+
+        if (!select || !select.value) {
+
+            showGoalTaskValidationError(
+                "Önce bir görev seç."
+            );
+
+            return;
+
         }
 
         source = {

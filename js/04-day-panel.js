@@ -127,14 +127,32 @@ function deleteDailyNote(key, id) {
 
     const entry = getDayEntry(key, true);
 
-    entry.notes =
-        entry.notes.filter(
-            note => note.id !== id
+    const note =
+        entry.notes.find(
+            item => item.id === id
         );
 
-    saveDailyData();
-    renderDayPanel();
-    renderCalendar();
+    if (!note) {
+        return;
+    }
+
+    openConfirmModal({
+        title: "Notu sil",
+        message: "Bu notu silmek istediğine emin misin?",
+        confirmLabel: "Sil",
+        onConfirm: () => {
+
+            entry.notes =
+                entry.notes.filter(
+                    item => item.id !== id
+                );
+
+            saveDailyData();
+            renderDayPanel();
+            renderCalendar();
+
+        }
+    });
 
 }
 
@@ -184,14 +202,33 @@ function deleteHomework(key, id) {
 
     const entry = getDayEntry(key, true);
 
-    entry.homeworks =
-        entry.homeworks.filter(
-            homework => homework.id !== id
+    const homework =
+        entry.homeworks.find(
+            item => item.id === id
         );
 
-    saveDailyData();
-    renderDayPanel();
-    renderCalendar();
+    if (!homework) {
+        return;
+    }
+
+    openConfirmModal({
+        title: "Ödevi sil",
+        message:
+            `"${homework.title}" ödevini silmek istediğine emin misin?`,
+        confirmLabel: "Sil",
+        onConfirm: () => {
+
+            entry.homeworks =
+                entry.homeworks.filter(
+                    item => item.id !== id
+                );
+
+            saveDailyData();
+            renderDayPanel();
+            renderCalendar();
+
+        }
+    });
 
 }
 
@@ -221,14 +258,33 @@ function deleteProject(key, id) {
 
     const entry = getDayEntry(key, true);
 
-    entry.projects =
-        entry.projects.filter(
-            project => project.id !== id
+    const project =
+        entry.projects.find(
+            item => item.id === id
         );
 
-    saveDailyData();
-    renderDayPanel();
-    renderCalendar();
+    if (!project) {
+        return;
+    }
+
+    openConfirmModal({
+        title: "Projeyi sil",
+        message:
+            `"${project.title}" projesini silmek istediğine emin misin?`,
+        confirmLabel: "Sil",
+        onConfirm: () => {
+
+            entry.projects =
+                entry.projects.filter(
+                    item => item.id !== id
+                );
+
+            saveDailyData();
+            renderDayPanel();
+            renderCalendar();
+
+        }
+    });
 
 }
 
@@ -288,14 +344,33 @@ function deletePlanItem(key, id) {
 
     const entry = getDayEntry(key, true);
 
-    entry.dailyPlan =
-        entry.dailyPlan.filter(
-            plan => plan.id !== id
+    const plan =
+        entry.dailyPlan.find(
+            item => item.id === id
         );
 
-    saveDailyData();
-    renderDayPanel();
-    renderCalendar();
+    if (!plan) {
+        return;
+    }
+
+    openConfirmModal({
+        title: "Planı sil",
+        message:
+            `"${plan.title}" planını silmek istediğine emin misin?`,
+        confirmLabel: "Sil",
+        onConfirm: () => {
+
+            entry.dailyPlan =
+                entry.dailyPlan.filter(
+                    item => item.id !== id
+                );
+
+            saveDailyData();
+            renderDayPanel();
+            renderCalendar();
+
+        }
+    });
 
 }
 
@@ -743,4 +818,3 @@ function setupDayPanel() {
     );
 
 }
-

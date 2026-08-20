@@ -46,6 +46,18 @@ let badgeEarnedAt = {};
  */
 let badgesFullCollectionOpen = false;
 
+/*
+ * ROZET KAZANIM KUTLAMASI — oturum içi durum.
+ * Mevcut goal celebration deseniyle (bkz. goalCelebratedKeys /
+ * goalCelebrationSeeded — 22-goals.js) BİREBİR AYNI mantık:
+ * uygulama ilk açıldığında halihazırda kazanılmış olan
+ * rozetler "seedBadgeCelebrations()" ile bu kümeye önceden
+ * eklenir (eski bir kazanım için kutlama tetiklenmesin diye);
+ * yalnızca bundan SONRA yeni kazanılan bir rozet kutlanır.
+ */
+let badgeCelebratedIds = new Set();
+let badgeCelebrationSeeded = false;
+
 /* =========================================================
    ROZET KAZANILMA ZAMANLARI — YÜKLE / KAYDET
    ========================================================= */
@@ -156,6 +168,64 @@ function getRecentlyEarnedBadges(earnedIds) {
 
         })
         .slice(0, BADGE_RECENT_PREVIEW_COUNT);
+
+}
+
+/* =========================================================
+   ROZET KAZANIM KUTLAMASI
+
+   Yeni bir animasyon/ses/toast sistemi İCAT EDİLMİYOR —
+   goal celebration'da zaten kurulmuş olan
+   playCompleteSound() (10-task-actions.js) ve
+   showShortcutHint() (06-shortcuts.js) aynen yeniden
+   kullanılıyor (bkz. checkAndCelebrateGoals — 22-goals.js,
+   birebir aynı desen).
+   ========================================================= */
+
+function seedBadgeCelebrations(earnedIds) {
+
+    earnedIds.forEach(id => {
+        badgeCelebratedIds.add(id);
+    });
+
+    badgeCelebrationSeeded = true;
+
+}
+
+function checkAndCelebrateBadges(earnedIds) {
+
+    if (!badgeCelebrationSeeded) {
+
+        seedBadgeCelebrations(earnedIds);
+
+        return;
+
+    }
+
+    earnedIds.forEach(id => {
+
+        if (badgeCelebratedIds.has(id)) {
+            return;
+        }
+
+        badgeCelebratedIds.add(id);
+
+        const badge =
+            BADGE_DEFINITIONS.find(
+                item => item.id === id
+            );
+
+        if (!badge) {
+            return;
+        }
+
+        playCompleteSound();
+
+        showShortcutHint(
+            `Yeni rozet kazandın! ${badge.icon} ${badge.name}`
+        );
+
+    });
 
 }
 
@@ -621,6 +691,7 @@ function renderBadges() {
     const earnedIds = getEarnedBadgeIds();
 
     syncBadgeEarnedTimestamps(earnedIds);
+    checkAndCelebrateBadges(earnedIds);
 
     renderBadgesCompactSummary(earnedIds);
     renderBadgeGrid(earnedIds);

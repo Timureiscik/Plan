@@ -58,8 +58,13 @@ function renderMediaPage() {
 
         if (!mediaDbAvailable) {
 
-            photosGroupsEl.innerHTML =
-                `<div class="media-empty">Bu tarayıcıda medya depolama kullanılamıyor.</div>`;
+            photosGroupsEl.innerHTML = `
+                <div class="empty-state compact">
+                    <div class="empty-icon">🖼</div>
+                    <h3>Medya depolama kullanılamıyor</h3>
+                    <p>Bu tarayıcıda fotoğraf ve ses özellikleri çalışmıyor.</p>
+                </div>
+            `;
 
             if (loadMoreBtn) {
                 loadMoreBtn.hidden = true;
@@ -71,8 +76,13 @@ function renderMediaPage() {
 
             if (groups.length === 0) {
 
-                photosGroupsEl.innerHTML =
-                    `<div class="media-empty">Henüz fotoğraf yok. Yukarıdan yükleyebilirsin.</div>`;
+                photosGroupsEl.innerHTML = `
+                    <div class="empty-state compact">
+                        <div class="empty-icon">📷</div>
+                        <h3>Henüz fotoğraf yok</h3>
+                        <p>Yukarıdan bir fotoğraf yükleyerek başlayabilirsin.</p>
+                    </div>
+                `;
 
                 if (loadMoreBtn) {
                     loadMoreBtn.hidden = true;
@@ -207,8 +217,13 @@ function renderAudioList() {
 
     if (!mediaDbAvailable) {
 
-        container.innerHTML =
-            `<div class="media-empty">Bu tarayıcıda medya depolama kullanılamıyor.</div>`;
+        container.innerHTML = `
+            <div class="empty-state compact">
+                <div class="empty-icon">🖼</div>
+                <h3>Medya depolama kullanılamıyor</h3>
+                <p>Bu tarayıcıda fotoğraf ve ses özellikleri çalışmıyor.</p>
+            </div>
+        `;
 
         return;
 
@@ -219,8 +234,13 @@ function renderAudioList() {
 
     if (audioItems.length === 0) {
 
-        container.innerHTML =
-            `<div class="media-empty">Henüz ses kaydı yok.</div>`;
+        container.innerHTML = `
+            <div class="empty-state compact">
+                <div class="empty-icon">🎙</div>
+                <h3>Henüz ses kaydı yok</h3>
+                <p>Yukarıdan bir dosya yükleyebilir ya da mikrofonla kaydedebilirsin.</p>
+            </div>
+        `;
 
         return;
 
@@ -715,4 +735,3 @@ function setupMediaPage() {
     });
 
 }
-
