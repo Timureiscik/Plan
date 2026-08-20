@@ -1,0 +1,15 @@
+services:
+  web:
+    image: nginx:alpine
+    user: root
+    ports:
+      - "3000:80"
+    volumes:
+      - ./:/usr/share/nginx/html:ro
+      - ./nginx.base44.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80/Plan.html"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
