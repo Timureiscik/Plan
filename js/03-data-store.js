@@ -9,12 +9,28 @@
 
 function loadData() {
 
+    /*
+     * LEGACY KEY TEMİZLİĞİ (görevler):
+     * Eğer güncel anahtar (STORAGE_KEY) boşsa ve veri eski
+     * anahtardan (LEGACY_STORAGE_KEY) okunduysa, bu bir
+     * migration'dır. Migration yalnızca veri BAŞARIYLA
+     * yeni anahtara YAZILDIKTAN sonra eski anahtar silinir
+     * — böylece yazma başarısız olursa (örn. kota dolu)
+     * eski veri kaybolmaz, yalnızca bir sonraki açılışta
+     * tekrar migration denenir.
+     */
+    let migratedFromLegacyTasks = false;
+
     try {
 
         let saved = localStorage.getItem(STORAGE_KEY);
 
         if (!saved) {
+
             saved = localStorage.getItem(LEGACY_STORAGE_KEY);
+
+            migratedFromLegacyTasks = saved !== null;
+
         }
 
         if (saved) {
@@ -23,7 +39,13 @@ function loadData() {
 
             if (Array.isArray(parsed)) {
                 tasks = parsed.map(normalizeTask);
+            } else {
+                migratedFromLegacyTasks = false;
             }
+
+        } else {
+
+            migratedFromLegacyTasks = false;
 
         }
 
@@ -31,15 +53,53 @@ function loadData() {
 
         console.error("Görevler yüklenemedi:", error);
         tasks = [];
+        migratedFromLegacyTasks = false;
 
     }
+
+    if (migratedFromLegacyTasks) {
+
+        try {
+
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(tasks)
+            );
+
+            localStorage.removeItem(LEGACY_STORAGE_KEY);
+
+        } catch (error) {
+
+            /*
+             * Yeni anahtara yazma başarısız oldu — eski
+             * anahtara (LEGACY_STORAGE_KEY) KASITLI OLARAK
+             * DOKUNULMUYOR, veri kaybı olmasın diye.
+             */
+            console.warn(
+                "Eski görev verisi (v3) yeni anahtara taşınamadı, v3 korunuyor:",
+                error
+            );
+
+        }
+
+    }
+
+    /*
+     * LEGACY KEY TEMİZLİĞİ (ayarlar): görevlerle BİREBİR
+     * AYNI güvenli migration deseni.
+     */
+    let migratedFromLegacySettings = false;
 
     try {
 
         let savedSettings = localStorage.getItem(SETTINGS_KEY);
 
         if (!savedSettings) {
+
             savedSettings = localStorage.getItem(LEGACY_SETTINGS_KEY);
+
+            migratedFromLegacySettings = savedSettings !== null;
+
         }
 
         if (savedSettings) {
@@ -85,13 +145,44 @@ function loadData() {
                     settings.palette = "monokrom";
                 }
 
+            } else {
+
+                migratedFromLegacySettings = false;
+
             }
+
+        } else {
+
+            migratedFromLegacySettings = false;
 
         }
 
     } catch (error) {
 
         console.error("Ayarlar yüklenemedi:", error);
+        migratedFromLegacySettings = false;
+
+    }
+
+    if (migratedFromLegacySettings) {
+
+        try {
+
+            localStorage.setItem(
+                SETTINGS_KEY,
+                JSON.stringify(settings)
+            );
+
+            localStorage.removeItem(LEGACY_SETTINGS_KEY);
+
+        } catch (error) {
+
+            console.warn(
+                "Eski ayar verisi (v1) yeni anahtara taşınamadı, v1 korunuyor:",
+                error
+            );
+
+        }
 
     }
 
@@ -769,4 +860,3 @@ function getCategory(id) {
     );
 
 }
-

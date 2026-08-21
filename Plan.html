@@ -4,6 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- =====================================================
+         CONTENT SECURITY POLICY
+         Meta-tag CSP; deployment ortamındaki HTTP header'ları
+         KAPSAMAZ (bu koddan doğrulanamaz, bkz. audit raporu).
+         Mevcut uygulamanın gerçek ihtiyaçlarına göre sıkı
+         tutuldu:
+         - script-src: yalnızca 'self' + Tesseract.js'in
+           yüklendiği jsdelivr CDN'i + yukarıdaki tema
+           inline script'inin TAM İÇERİĞİNE ait gerçek
+           sha256 hash'i (metin değiştirilirse hash de
+           güncellenmeli, aksi hâlde tarayıcı bu script'i
+           bloklar).
+         - style-src: 'unsafe-inline' gerekli — uygulama
+           genelinde dinamik inline `style="..."` öznitelikleri
+           kullanılıyor (kategori renkleri, ilerleme çubukları
+           vb.); bunlar olmadan bu özellikler kırılır.
+         - img-src/media-src: 'self' + blob: — fotoğraf/ses
+           object URL'leri (bkz. 14/17/19-media-*.js) blob:
+           şemasını kullanıyor.
+         - connect-src: 'self' + jsdelivr (Tesseract çalışma
+           zamanı dosyaları için) + calendar.google.com (ICS
+           beslemesi, bkz. 13-calendar.js). NOT: Tesseract.js
+           çalışma zamanında ek CDN'lerden wasm/dil paketi
+           çekebilir; bu davranış kütüphanenin kendi iç
+           implementasyonunda olduğu için bu depodaki koddan
+           doğrulanamıyor — OCR ile ilgili bir CSP ihlali
+           görülürse connect-src'ye ilgili origin eklenmelidir.
+         - object-src/frame-src: 'none' — uygulamada plugin/
+           iframe kullanımı yok.
+         ===================================================== -->
+    <meta
+        http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'sha256-H+PZX3X8IZrTnta7TdU5dcgn5k79W2Xq+0Qrv43OlxU='; style-src 'self' 'unsafe-inline'; img-src 'self' blob:; media-src 'self' blob:; connect-src 'self' https://cdn.jsdelivr.net https://calendar.google.com; font-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self';"
+    >
+
     <title>Habitus</title>
 
     <!-- =====================================================
@@ -1515,6 +1551,26 @@
                 Ekle
             </button>
         </form>
+
+
+        <div class="settings-divider"></div>
+
+        <h3 class="settings-subheading">Tehlikeli Alan</h3>
+
+        <p class="field-hint">
+            Bu işlem; görevlerini, hedeflerini, notlarını,
+            kategorilerini, gün paneli verilerini, rozet
+            kayıtlarını ve fotoğraf/ses arşivini bu cihazdan
+            kalıcı olarak siler. Geri alınamaz.
+        </p>
+
+        <button
+            id="factory-reset-button"
+            type="button"
+            class="secondary-button"
+        >
+            Tüm Habitus verilerini sil
+        </button>
 
 
         <div class="settings-divider"></div>

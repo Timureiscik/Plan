@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupGoalsPage();
     setupQuickNotes();
     setupConfirmModal();
+    setupFactoryReset();
 
     renderAll();
     updateClock();
@@ -71,13 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
      * (fetchIcsCalendar ile aynı desen).
      */
     loadMediaIndex().then(() => {
-
-        /*
-         * İlk asenkron medya indeksindeki mevcut rozetler yeni
-         * kazanım değildir; yalnızca sonradan eklenen medyada
-         * feedback gösterilmesi için bunları kutlama durumuna ekle.
-         */
-        seedBadgeCelebrations(getEarnedBadgeIds());
 
         renderMediaPage();
         renderDayPanelMedia();
