@@ -75,6 +75,25 @@ const MEDIA_MONTH_NAMES = [
 const TESSERACT_CDN_URL =
     "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
 
+/*
+ * OCR — DİL VERİSİ (langPath) — CSP UYUMLULUK NOTU
+
+ * Tesseract.js'in DEFAULT langPath'i
+ * "https://tessdata.projectnaptha.com/..." adresidir — bu
+ * host, Plan.html'deki CSP'nin connect-src listesinde YOKTUR
+ * ve olmamalıdır (gereksiz üçüncü bir host eklememek için).
+ * Bunun yerine, aynı zaten-güvenilir cdn.jsdelivr.net
+ * üzerinden servis edilen naptha/tessdata deposunun gh-pages
+ * dalı (tessdata.projectnaptha.com'un gerçek kaynağı budur)
+ * jsdelivr'in GitHub proxy'si üzerinden kullanılıyor. Bu
+ * sayede CSP'nin connect-src'ine YENİ BİR HOST EKLEMEDEN
+ * (mevcut cdn.jsdelivr.net izniyle) dil verisi indirilebiliyor
+ * — bkz. runOcrForRecord() (16-media-ocr.js), Plan.html CSP
+ * yorumu.
+ */
+const TESSERACT_LANG_PATH =
+    "https://cdn.jsdelivr.net/gh/naptha/tessdata@gh-pages/4.0.0";
+
 let mediaDb = null;
 let mediaDbReady = null;
 let mediaDbAvailable = true;
@@ -514,4 +533,3 @@ function revokeAllMediaObjectUrls() {
     mediaObjectUrls.clear();
 
 }
-

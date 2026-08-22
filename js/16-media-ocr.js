@@ -80,11 +80,27 @@ async function runOcrForRecord(id) {
             throw new Error("Görsel bulunamadı.");
         }
 
+        /*
+         * langPath BİLEREK açıkça veriliyor — Tesseract.js'in
+         * varsayılan langPath'i (tessdata.projectnaptha.com)
+         * Plan.html'deki CSP'nin connect-src listesinde yok
+         * ve YENİ BİR HOST eklememek için oraya da
+         * eklenmiyor. Bunun yerine, script/core dosyalarıyla
+         * (TESSERACT_CDN_URL) aynı zaten-güvenilir
+         * cdn.jsdelivr.net üzerinden servis edilen dil verisi
+         * kullanılıyor (bkz. TESSERACT_LANG_PATH —
+         * 14-media-core.js). Bu satır olmadan dil verisi
+         * fetch'i CSP tarafından sessizce engellenir ve OCR
+         * her zaman "failed" durumuna düşer.
+         */
         const result =
             await Tesseract.recognize(
                 blobRecord.blob,
                 "tur",
-                { logger: () => {} }
+                {
+                    logger: () => {},
+                    langPath: TESSERACT_LANG_PATH
+                }
             );
 
         const text =
@@ -135,4 +151,3 @@ async function runOcrForRecord(id) {
     }
 
 }
-
