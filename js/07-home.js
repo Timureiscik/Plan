@@ -171,6 +171,99 @@ function createTaskRow(task) {
 }
 
 /* =========================================================
+   GÖREV SATIRI — TARGETED GÜNCELLEME (P0-1A)
+
+   createTaskRow() ile AYNI görsel çıktıyı üretir, ama DOM
+   node'unu SIFIRDAN yaratmak yerine #home-task-list içinde
+   ZATEN VAR OLAN satırı yerinde günceller. Yeni bir template/
+   render sistemi İCAT EDİLMEDİ — createTaskRow() içindeki
+   metin/class hesaplama mantığı (getCurrentStreak,
+   getLast7DaysCount, completed) BİREBİR aynı şekilde
+   kullanılıyor; yalnızca hedef artık innerHTML atamak yerine
+   mevcut alt elementlerin textContent/className'i.
+
+   Node bulunamazsa (görev Ana Sayfanın ilk 6'sı DIŞINDaysa,
+   ya da henüz hiç görev yoksa) SESSİZCE hiçbir şey yapılmaz —
+   yeni bir satır asla EKLENMEZ (bkz. P0-1A kapsam sınırı:
+   liste üyeliği/reordering bu değişikliğin işi değil).
+   ========================================================= */
+
+function updateTaskRowUI(taskId) {
+
+    const row =
+        document.querySelector(
+            `.task-row[data-task-id="${taskId}"]`
+        );
+
+    if (!row) {
+        return;
+    }
+
+    const task =
+        tasks.find(
+            item => item.id === taskId
+        );
+
+    if (!task) {
+        return;
+    }
+
+    const completed =
+        isCompletedToday(task);
+
+    const last7DaysCount =
+        getLast7DaysCount(task);
+
+    const checkButton =
+        row.querySelector(".task-check");
+
+    if (checkButton) {
+
+        checkButton.classList.toggle(
+            "checked",
+            completed
+        );
+
+        checkButton.textContent =
+            completed ? "✓" : "";
+
+    }
+
+    const titleEl =
+        row.querySelector(".task-row-title");
+
+    if (titleEl) {
+
+        titleEl.classList.toggle(
+            "completed",
+            completed
+        );
+
+    }
+
+    const metaEl =
+        row.querySelector(".task-row-meta");
+
+    if (metaEl) {
+
+        metaEl.textContent =
+            `${getCurrentStreak(task)} günlük seri • ${last7DaysCount}/7`;
+
+    }
+
+    const progressEl =
+        row.querySelector(".task-row-progress");
+
+    if (progressEl) {
+
+        progressEl.textContent =
+            `${last7DaysCount}/7`;
+
+    }
+
+}
+
+/* =========================================================
    ARAMA DEĞERİ
 
    #task-search inputunun güncel (trim edilmiş) değerini
@@ -195,4 +288,3 @@ function getSearchValue() {
         : "";
 
 }
-

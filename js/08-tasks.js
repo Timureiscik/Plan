@@ -311,6 +311,91 @@ function createFullTaskCard(
 }
 
 /* =========================================================
+   GÖREV KARTI — TARGETED GÜNCELLEME (P0-1A)
+
+   createFullTaskCard() ile AYNI metin/CLASS hesaplama
+   mantığını (getCurrentStreak, getLast7DaysCount,
+   getBestStreak, isCompletedToday) kullanır — yeni bir
+   hesaplama sistemi İCAT EDİLMEDİ. Fark: kartın TAMAMI
+   yeniden yaratılmıyor; #task-list içinde ZATEN VAR OLAN
+   `.task-card[data-task-id]` node'u bulunup yalnızca
+   checkbox/title/meta güncelleniyor.
+
+   Kart mevcut değilse (arama/kategori filtresi nedeniyle
+   o an DOM'da yoksa) SESSİZCE hiçbir şey yapılmaz — kart
+   asla listeye zorla eklenmiyor. Aynı nedenle
+   task-card-actions (sil/düzenle/sırala butonları,
+   realIndex'e bağlı disabled state) ve açıklama paneli
+   (.task-description-panel) BURADA HİÇ DOKUNULMUYOR —
+   bunlar tamamlanma durumundan etkilenmez ve açık/kapalı
+   state'i (bkz. toggleDescription) böylece korunur.
+   ========================================================= */
+
+function updateTaskCardUI(taskId) {
+
+    const card =
+        document.querySelector(
+            `.task-card[data-task-id="${taskId}"]`
+        );
+
+    if (!card) {
+        return;
+    }
+
+    const task =
+        tasks.find(
+            item => item.id === taskId
+        );
+
+    if (!task) {
+        return;
+    }
+
+    const completed =
+        isCompletedToday(task);
+
+    const checkButton =
+        card.querySelector(".task-check");
+
+    if (checkButton) {
+
+        checkButton.classList.toggle(
+            "checked",
+            completed
+        );
+
+        checkButton.textContent =
+            completed ? "✓" : "";
+
+    }
+
+    const titleEl =
+        card.querySelector(".task-card-title");
+
+    if (titleEl) {
+
+        titleEl.classList.toggle(
+            "completed",
+            completed
+        );
+
+    }
+
+    const metaEl =
+        card.querySelector(".task-card-meta");
+
+    if (metaEl) {
+
+        metaEl.textContent =
+            `${getCurrentStreak(task)} günlük seri • ` +
+            `Son 7 günde ${getLast7DaysCount(task)}/7 • ` +
+            `En iyi seri ${getBestStreak(task)}`;
+
+    }
+
+}
+
+/* =========================================================
    AÇIKLAMA
    ========================================================= */
 
@@ -365,4 +450,3 @@ function findTaskDescriptionButton(
     ) || null;
 
 }
-

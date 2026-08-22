@@ -20,6 +20,17 @@
    mantıklarıyla AYRI ve DEĞİŞMEDEN çalışmaya devam ediyor —
    burada yalnızca görev bazlı celebration'ın tetiklenme
    sıklığı değişti, hiçbir kutlama sistemi kaldırılmadı.
+
+   P0-1A NOTU (targeted rendering): Bu fonksiyon artık HER
+   tamamlamada tüm uygulamayı (renderAll()) yeniden çizmiyor.
+   Yalnızca doğrudan etkilenen UI parçaları
+   refreshTaskCompletionUI() ile targeted olarak güncelleniyor
+   (bkz. o fonksiyonun üst yorumu — kapsam BİLEREK Goals/
+   Badges/Calendar/Day Panel/Streak sıralamasını KAPSAMIYOR;
+   bunlar bir sonraki tam renderAll() tetiklendiğinde
+   [örn. sayfa değişince, görev eklenince/silinince] güncel
+   hale gelmeye devam ediyor). State mutation/persistence
+   davranışı (saveData()) ve ses/glow eşiği HİÇ DEĞİŞMEDİ.
    ========================================================= */
 
 function toggleCompleteToday(taskId) {
@@ -61,7 +72,7 @@ function toggleCompleteToday(taskId) {
 
     saveData();
 
-    renderAll();
+    refreshTaskCompletionUI(taskId);
 
     if (justCompleted) {
 
@@ -89,6 +100,52 @@ function toggleCompleteToday(taskId) {
         }
 
     }
+
+}
+
+/* =========================================================
+   GÖREV TAMAMLAMA — TARGETED UI REFRESH (P0-1A)
+
+   toggleCompleteToday() sonrası eskiden çağrılan renderAll()
+   (tüm uygulamayı sıfırdan yeniden çizen global fonksiyon)
+   yerine geçer. Yeni bir "paralel stats/render sistemi"
+   İCAT EDİLMEDİ — burada listelenen her adım zaten var olan,
+   kendi başına tek bir DOM bölgesini güncelleyen mevcut
+   fonksiyonları (updateTaskCounter, renderDailySummary,
+   updateStatsAndSidebar — bkz. 12-stats.js / 21-daily-
+   summary.js) ya da bu değişiklikte eklenen, aynı şekilde
+   tek bir görev satırı/kartıyla sınırlı yeni yardımcıları
+   (updateTaskRowUI — 07-home.js, updateTaskCardUI —
+   08-tasks.js) çağırıyor.
+
+   BİLİNÇLİ KAPSAM DIŞI (P0-1A):
+   - Goals (renderGoalsPage/renderActiveGoals) — bu task'a
+     `linked` bir hedef olsa bile burada GÜNCELLENMİYOR.
+   - Badges (renderBadges) — toplam tamamlama sayısı/streak
+     eşiği değişmiş olsa bile burada GÜNCELLENMİYOR.
+   - Calendar (renderCalendar) — bugünün hücresindeki görev
+     noktası (.dot.task) burada GÜNCELLENMİYOR.
+   - Day Panel (renderDayPanel) — seçili gün bugünse bile
+     "o gün tamamlanan görevler" listesi burada
+     GÜNCELLENMİYOR.
+   - Streak listesi yeniden SIRALAMA (renderStreaks tamamen
+     atlanıyor) — Streaks sayfası burada hiç dokunulmuyor.
+
+   Bu ekranlar, bir sonraki tam renderAll() tetiklendiğinde
+   (sayfa değişimi, görev ekleme/silme/taşıma, ayar kaydetme
+   vb. — bkz. mevcut renderAll() call-site'ları) güncel hale
+   gelmeye devam ediyor. Bu, P0-1A'nın kasıtlı ve onaylanmış
+   kapsam sınırıdır; sonraki bir P0 maddesinde genişletilebilir.
+   ========================================================= */
+
+function refreshTaskCompletionUI(taskId) {
+
+    updateTaskRowUI(taskId);
+    updateTaskCardUI(taskId);
+
+    updateTaskCounter();
+    renderDailySummary();
+    updateStatsAndSidebar();
 
 }
 
