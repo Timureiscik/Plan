@@ -16,7 +16,18 @@
            inline script'inin TAM İÇERİĞİNE ait gerçek
            sha256 hash'i (metin değiştirilirse hash de
            güncellenmeli, aksi hâlde tarayıcı bu script'i
-           bloklar).
+           bloklar) + 'wasm-unsafe-eval'. SONUNCUSU BİLEREK
+           EKLENDİ: Tesseract.js'in çekirdek dosyası
+           (tesseract-core*.wasm.js) WebAssembly.instantiate()
+           ile derleniyor; CSP3'te WASM derleme/çalıştırma
+           'unsafe-eval'DEN AYRI, ondan çok daha dar kapsamlı
+           bir anahtar kelime olan 'wasm-unsafe-eval' ile
+           yönetilir — yalnızca WebAssembly.compile/instantiate
+           izin verir, eval()/new Function() gibi asıl JS
+           kod-string'den-çalıştırma yollarını AÇMAZ (bkz.
+           MDN script-src belgesi, WHATWG/W3C wasm-unsafe-eval
+           teklifi). 'unsafe-eval' KULLANILMADI — kapsam
+           bilinçli olarak yalnızca WASM'a daraltıldı.
          - worker-src: Tesseract.js OCR işini bir Web Worker
            içinde çalıştırır ve bu worker'ı doğrudan jsdelivr
            CDN'inden yüklenen bir script olarak başlatır.
@@ -41,13 +52,26 @@
            GitHub proxy'si üzerinden servis eden aynasını
            kullanıyor — böylece connect-src'ye üçüncü bir host
            eklenmesine hiç gerek kalmıyor) + calendar.google.com
-           (ICS beslemesi, bkz. 13-calendar.js).
+           (ICS beslemesi, bkz. 13-calendar.js) + data:. SONUNCUSU
+           BİLEREK EKLENDİ ve YALNIZCA connect-src'e (img-src,
+           script-src vb. HİÇBİR BAŞKA direktife DEĞİL) tanımlı:
+           Tesseract.js'in çekirdek .wasm.js dosyaları, asıl
+           WebAssembly ikilisini KENDİ İÇİNDE base64 data: URI
+           olarak gömer (bu, tesseract.js-core'un resmi build
+           yöntemidir — ayrı bir .wasm dosyası YOKTUR, bkz.
+           naptha/tesseract.js GitHub issue #282) ve worker
+           içinde bu veriyi `fetch("data:...")` ile kendi
+           baytlarına çeviriyor. connect-src'te data: yoksa bu
+           fetch CSP tarafından bloklanıyor. Bu, "geniş" bir
+           data: izni DEĞİL — yalnızca ağ isteklerini kapsayan
+           tek bir direktife, tek bir şema için tanımlı dar bir
+           istisna.
          - object-src/frame-src: 'none' — uygulamada plugin/
            iframe kullanımı yok.
          ===================================================== -->
     <meta
         http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'sha256-H+PZX3X8IZrTnta7TdU5dcgn5k79W2Xq+0Qrv43OlxU='; worker-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' blob:; media-src 'self' blob:; connect-src 'self' https://cdn.jsdelivr.net https://calendar.google.com; font-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self';"
+        content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval' 'sha256-H+PZX3X8IZrTnta7TdU5dcgn5k79W2Xq+0Qrv43OlxU='; worker-src 'self' blob: https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' blob:; media-src 'self' blob:; connect-src 'self' https://cdn.jsdelivr.net https://calendar.google.com data:; font-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self';"
     >
 
     <title>Habitus</title>

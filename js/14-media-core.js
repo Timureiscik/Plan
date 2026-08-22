@@ -76,23 +76,18 @@ const TESSERACT_CDN_URL =
     "https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js";
 
 /*
- * OCR — DİL VERİSİ (langPath) — CSP UYUMLULUK NOTU
+ * OCR — DİL VERİSİ (langPath)
 
- * Tesseract.js'in DEFAULT langPath'i
- * "https://tessdata.projectnaptha.com/..." adresidir — bu
- * host, Plan.html'deki CSP'nin connect-src listesinde YOKTUR
- * ve olmamalıdır (gereksiz üçüncü bir host eklememek için).
- * Bunun yerine, aynı zaten-güvenilir cdn.jsdelivr.net
- * üzerinden servis edilen naptha/tessdata deposunun gh-pages
- * dalı (tessdata.projectnaptha.com'un gerçek kaynağı budur)
- * jsdelivr'in GitHub proxy'si üzerinden kullanılıyor. Bu
- * sayede CSP'nin connect-src'ine YENİ BİR HOST EKLEMEDEN
- * (mevcut cdn.jsdelivr.net izniyle) dil verisi indirilebiliyor
- * — bkz. runOcrForRecord() (16-media-ocr.js), Plan.html CSP
- * yorumu.
+ * Burada ARTIK elle bir langPath override'ı YOK. Tesseract.js
+ * v5'in kendi varsayılanı zaten cdn.jsdelivr.net üzerinden
+ * (npm @tesseract.js-data paketleri) servis ediliyor — bu,
+ * script/core dosyalarıyla (TESSERACT_CDN_URL) aynı host
+ * olduğu için CSP'ye ekstra bir izin gerektirmiyor. Eskiden
+ * burada tanımlı olan TESSERACT_LANG_PATH sabiti, naptha/tessdata
+ * deposunun kendi README'sinde "deprecated / no longer updated"
+ * olarak işaretlenmiş eski bir gh-pages dalına işaret ediyordu
+ * — bkz. runOcrForRecord() (16-media-ocr.js).
  */
-const TESSERACT_LANG_PATH =
-    "https://cdn.jsdelivr.net/gh/naptha/tessdata@gh-pages/4.0.0";
 
 let mediaDb = null;
 let mediaDbReady = null;
