@@ -138,6 +138,8 @@ function handleSettingsSubmit(
 
     renderAll();
 
+    showShortcutHint("Ayarlar kaydedildi");
+
 }
 
 /* =========================================================

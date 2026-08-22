@@ -351,6 +351,8 @@ function handleGoalSubmit(event) {
         closeGoalModal();
         renderGoalsPage();
 
+        showShortcutHint("Hedef güncellendi");
+
         return;
 
     }
@@ -391,6 +393,8 @@ function handleGoalSubmit(event) {
 
         closeGoalModal();
         renderGoalsPage();
+
+        showShortcutHint("Hedef yeniden bağlandı");
 
         return;
 
@@ -509,5 +513,7 @@ function handleGoalSubmit(event) {
 
     closeGoalModal();
     renderGoalsPage();
+
+    showShortcutHint("Hedef oluşturuldu");
 
 }

@@ -31,3 +31,17 @@
     transform: translateX(-50%) translateY(0);
 }
 
+/*
+ * ERİŞİLEBİLİRLİK — HAREKETİ AZALT
+ * Toast içeriği (görünürlük/gizlenme) aynı kalır; yalnızca
+ * kayma/sönme geçişi kaldırılır.
+ */
+@media (prefers-reduced-motion: reduce) {
+
+    .shortcut-hint {
+        transition: opacity 0.01ms linear;
+        transform: translateX(-50%) translateY(0);
+    }
+
+}
+

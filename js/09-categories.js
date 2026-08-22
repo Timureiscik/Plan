@@ -255,6 +255,8 @@ function setupCategoryManagement() {
             renderCategoryPicker();
             renderCategoryFilter();
 
+            showShortcutHint("Kategori eklendi");
+
         }
     );
 
@@ -327,6 +329,8 @@ function setupCategoryManagement() {
                 renderCategoryFilter();
                 renderAll();
 
+                showShortcutHint("Kategori güncellendi");
+
                 return;
 
             }
@@ -363,6 +367,8 @@ function setupCategoryManagement() {
                         renderCategoryFilter();
                         renderAll();
 
+                        showShortcutHint("Kategori silindi");
+
                     }
                 });
 
@@ -372,4 +378,3 @@ function setupCategoryManagement() {
     );
 
 }
-

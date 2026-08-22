@@ -171,7 +171,83 @@ function focusTaskCard(cards) {
 
 }
 
+/* =========================================================
+   TOAST / KISAYOL İPUCU SİSTEMİ
+
+   showShortcutHint() PROJE GENELİNDEKİ TEK bildirim giriş
+   noktasıdır — hem klavye kısayolu ipuçları (örn. "Yeni
+   görev — Ctrl+N") hem de genel toast bildirimleri (görev
+   eklendi/güncellendi/silindi, hedef/rozet kutlamaları,
+   kaydetme hataları vb. — bkz. çağıran dosyalar) için AYNI
+   fonksiyon kullanılır; ayrı bir bildirim kütüphanesi/
+   component sistemi İCAT EDİLMEDİ, mevcut #shortcut-hint
+   elementi ve görsel tasarımı (bkz. css/components/toast.css)
+   aynen korunuyor.
+
+   Tek eklenen şey: art arda hızlıca gelen birden fazla
+   bildirimin üst üste binip "kaotik" görünmesini önlemek
+   için basit bir SIRA (queue) — bir toast gösterilirken yeni
+   bir tane istenirse, öncekinin kaybolmasını bekleyip
+   ardından gösterilir. Aynı metin çok kısa bir süre (500ms)
+   içinde tekrar istenirse (örn. hızlı art arda tıklama)
+   yinelenen bildirim kuyruğa hiç eklenmez.
+   ========================================================= */
+
+const TOAST_DISPLAY_MS = 1400;
+const TOAST_GAP_MS = 150;
+const TOAST_DEDUPE_MS = 500;
+
+let toastQueue = [];
+let toastActive = false;
+let toastHideTimer = null;
+let toastAdvanceTimer = null;
+let lastToastText = null;
+let lastToastAt = 0;
+
 function showShortcutHint(text) {
+
+    if (!text) {
+        return;
+    }
+
+    const now = Date.now();
+
+    if (
+        text === lastToastText &&
+        (now - lastToastAt) < TOAST_DEDUPE_MS
+    ) {
+
+        return;
+
+    }
+
+    lastToastText = text;
+    lastToastAt = now;
+
+    toastQueue.push(text);
+
+    advanceToastQueue();
+
+}
+
+function advanceToastQueue() {
+
+    if (toastActive) {
+        return;
+    }
+
+    const next =
+        toastQueue.shift();
+
+    if (next === undefined) {
+        return;
+    }
+
+    renderToastHint(next);
+
+}
+
+function renderToastHint(text) {
 
     const hint =
         $("#shortcut-hint");
@@ -180,23 +256,43 @@ function showShortcutHint(text) {
         return;
     }
 
+    toastActive = true;
+
     hint.textContent = text;
 
     hint.classList.add("show");
 
-    clearTimeout(
-        showShortcutHint._timer
-    );
+    clearTimeout(toastHideTimer);
+    clearTimeout(toastAdvanceTimer);
 
-    showShortcutHint._timer =
+    toastHideTimer =
         setTimeout(
             () => {
+
                 hint.classList.remove(
                     "show"
                 );
+
+                /*
+                 * Kaybolma geçişinin (opacity/transform)
+                 * bitmesi için küçük bir ara — bkz.
+                 * TOAST_GAP_MS ve .shortcut-hint transition
+                 * süresi (css/components/toast.css).
+                 */
+                toastAdvanceTimer =
+                    setTimeout(
+                        () => {
+
+                            toastActive = false;
+
+                            advanceToastQueue();
+
+                        },
+                        TOAST_GAP_MS
+                    );
+
             },
-            1400
+            TOAST_DISPLAY_MS
         );
 
 }
-

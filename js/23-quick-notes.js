@@ -96,6 +96,10 @@ function saveQuickNotes() {
             error
         );
 
+        if (typeof showShortcutHint === "function") {
+            showShortcutHint("Not kaydedilemedi.");
+        }
+
         return false;
 
     }
@@ -153,6 +157,8 @@ function deleteQuickNoteWithConfirm(id) {
             saveQuickNotes();
 
             renderQuickNotes();
+
+            showShortcutHint("Not silindi");
 
         }
     });

@@ -161,6 +161,8 @@ function archiveGoal(goalId) {
             saveGoals();
             renderGoalsPage();
 
+            showShortcutHint("Hedef arşivlendi");
+
         }
     });
 

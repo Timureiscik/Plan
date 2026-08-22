@@ -212,6 +212,18 @@ function saveData() {
 
         console.error("Veriler kaydedilemedi:", error);
 
+        /*
+         * P0 UX notu: eskiden bu hata yalnızca konsola
+         * yazılıyor, kullanıcıya HİÇBİR geri bildirim
+         * verilmiyordu (bkz. görev tanımı madde 2).
+         * showShortcutHint zaten global bir toast
+         * fonksiyonu (bkz. 06-shortcuts.js) — yeni bir
+         * hata gösterim sistemi İCAT EDİLMEDİ.
+         */
+        if (typeof showShortcutHint === "function") {
+            showShortcutHint("Değişiklik kaydedilemedi.");
+        }
+
         return false;
 
     }
@@ -358,6 +370,10 @@ function saveDailyData() {
             "Gün verileri kaydedilemedi:",
             error
         );
+
+        if (typeof showShortcutHint === "function") {
+            showShortcutHint("Değişiklik kaydedilemedi.");
+        }
 
         return false;
 
@@ -633,6 +649,10 @@ function saveCategories() {
             "Kategoriler kaydedilemedi:",
             error
         );
+
+        if (typeof showShortcutHint === "function") {
+            showShortcutHint("Değişiklik kaydedilemedi.");
+        }
 
         return false;
 

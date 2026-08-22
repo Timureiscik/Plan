@@ -5,6 +5,21 @@
 
 /* =========================================================
    GÖREV TAMAMLAMA
+
+   P0 UX notu: eskiden HER tamamlamada (justCompleted) ses +
+   yeşil glow tetikleniyordu — premium bir üretkenlik
+   uygulaması için bu çok sık/yorucu bir geri bildirimdi
+   (bkz. görev tanımı — "10 görev tamamlandı = 10 kutlama
+   sesi/glow varsayılan deneyim olmamalı"). Normal bir
+   tamamlama artık yalnızca SESSİZCE işaretlenir — checkbox'ın
+   kendisi zaten dolu/işaretli göründüğü için ayrıca bir
+   "subtle/local feedback" gerekmiyor. Ses + glow YALNIZCA
+   anlamlı bir eşik geçildiğinde çalışır: bugünün TÜM
+   görevleri tamamlandığında. Hedef/rozet kutlamaları (bkz.
+   22-goals.js / 20-badges.js) zaten kendi eşik/seed
+   mantıklarıyla AYRI ve DEĞİŞMEDEN çalışmaya devam ediyor —
+   burada yalnızca görev bazlı celebration'ın tetiklenme
+   sıklığı değişti, hiçbir kutlama sistemi kaldırılmadı.
    ========================================================= */
 
 function toggleCompleteToday(taskId) {
@@ -50,9 +65,28 @@ function toggleCompleteToday(taskId) {
 
     if (justCompleted) {
 
-        playCompleteSound();
+        /*
+         * "Bugünün tüm görevleri tamamlandı" — tek anlamlı
+         * eşik burada kontrol ediliyor. getTodayCounts()
+         * zaten mevcut (bkz. 12-stats.js); yeni bir sayaç
+         * İCAT EDİLMEDİ.
+         */
+        const { done, total } = getTodayCounts();
 
-        triggerGlow(taskId);
+        const allTasksDoneToday =
+            total > 0 && done === total;
+
+        if (allTasksDoneToday) {
+
+            playCompleteSound();
+
+            triggerGlow(taskId);
+
+            showShortcutHint(
+                "Bugünün tüm görevlerini tamamladın! 🎉"
+            );
+
+        }
 
     }
 
@@ -309,6 +343,15 @@ function handleTaskSubmit(
         return;
     }
 
+    /*
+     * closeTaskModal() editingTaskId'yi sıfırladığı için,
+     * toast metnini seçmek üzere (ekleme mi düzenleme mi)
+     * bu bilgiyi kaydetme/kapatma adımlarından ÖNCE, geçici
+     * bir değişkende saklıyoruz.
+     */
+    const wasEditing =
+        Boolean(editingTaskId);
+
     if (editingTaskId) {
 
         const task =
@@ -354,6 +397,12 @@ function handleTaskSubmit(
 
     renderAll();
 
+    showShortcutHint(
+        wasEditing
+            ? "Görev güncellendi"
+            : "Görev eklendi"
+    );
+
 }
 
 /* =========================================================
@@ -397,6 +446,8 @@ function deleteTask(taskId) {
             markGoalsForDeletedTask(taskId);
 
             renderAll();
+
+            showShortcutHint("Görev silindi");
 
         }
     });
@@ -449,4 +500,3 @@ function moveTask(
     renderAll();
 
 }
-

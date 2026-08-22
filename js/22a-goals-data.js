@@ -169,6 +169,10 @@ function saveGoals() {
             error
         );
 
+        if (typeof showShortcutHint === "function") {
+            showShortcutHint("Değişiklik kaydedilemedi.");
+        }
+
         return false;
 
     }

@@ -110,6 +110,13 @@
 
 /* =========================================================
    TAMAMLAMA ANİMASYONU
+
+   Bu animasyon artık YALNIZCA anlamlı bir eşik geçildiğinde
+   (örn. bugünün tüm görevlerinin tamamlanması, hedef/rozet
+   kutlaması) tetikleniyor — bkz. toggleCompleteToday()
+   (10-task-actions.js). Normal, tek görev tamamlamalarında
+   bu class hiç eklenmiyor; CSS'in kendisi DEĞİŞMEDİ, yalnızca
+   ne sıklıkla uygulandığı değişti.
    ========================================================= */
 
 @keyframes plan-complete-glow {
@@ -130,6 +137,25 @@
 .task-card.just-completed,
 .goal-card.just-completed {
     animation: plan-complete-glow 0.7s ease-out;
+}
+
+/*
+ * ERİŞİLEBİLİRLİK — HAREKETİ AZALT
+ * Kullanıcı işletim sistemi düzeyinde "hareketi azalt"
+ * tercihini işaretlediyse, kutlama glow'u anında (animasyonsuz)
+ * uygulanır — box-shadow'un kendisi (ve dolayısıyla "bir şey
+ * oldu" geri bildirimi) hâlâ görünür kalır, yalnızca pulse
+ * hareketi kaldırılır.
+ */
+@media (prefers-reduced-motion: reduce) {
+
+    .task-row.just-completed,
+    .task-card.just-completed,
+    .goal-card.just-completed {
+        animation: none;
+        box-shadow: 0 0 0 2px rgba(88, 214, 141, 0.45);
+    }
+
 }
 
 /* =========================================================
@@ -410,4 +436,3 @@
     font-size: 12px;
     color: var(--muted-2);
 }
-
